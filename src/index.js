@@ -2,6 +2,7 @@ require('dotenv').config({ path: 'variables.env' });
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const jwt = require("jsonwebtoken");
 //const path = require('path');
 
 // Enable cors
@@ -15,9 +16,33 @@ app.use(express.json());
 //app.use(express.static(path.resolve(__dirname, '../public')));
 
 // Routes
-app.use('/', require('./routes/ubicacionesGeograficas.routes'));
 app.use('/', require('./routes/user.routes'));
 app.use('/', require('./routes/login.routes'));
+
+/* app.use(function(req, res, next) {
+  const authHeader = req.headers.authorization;
+
+  if(!authHeader){
+    return res.status(403).json({
+      error: 'No está autorizado para realizar esta acción'
+    });
+  } else {
+    const token = authHeader.split(' ')[1];
+
+    jwt.verify(token, process.env.SECRETPRIVATEKEY, function(err, user) {
+      if (err) {
+        return res.status(403).json({
+          error: 'No está autorizado para realizar esta acción'
+        });
+      } else {
+        next();
+      }
+    });
+  }
+
+}); */
+
+app.use('/', require('./routes/ubicacionesGeograficas.routes'));
 app.use('/', require('./routes/adminuser.routes'));
 app.use('/', require('./routes/clientes.routes'));
 app.use('/', require('./routes/mascotas.routes'));
