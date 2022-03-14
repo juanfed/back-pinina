@@ -16,10 +16,8 @@ router.post("/generate-code-register", async (req, res) => {
   try {
     const {
       correo,
-      primer_nombre,
-      segundo_nombre,
-      primer_apellido,
-      segundo_apellido,
+      nombres,
+      apellidos,
       telefono,
       firewall,
       ubicacion,
@@ -31,29 +29,21 @@ router.post("/generate-code-register", async (req, res) => {
         campo: correo,
       },
       {
-        nombre: "primer_nombre",
-        campo: primer_nombre,
+        nombre: "nombres",
+        campo: nombres,
       },
       {
-        nombre: "segundo_nombre",
-        campo: segundo_nombre,
+        nombre: "apellidos",
+        campo: apellidos,
       },
-      {
-        nombre: "primer_apellido",
-        campo: primer_apellido,
-      },
-      {
-        nombre: "segundo_apellido",
-        campo: segundo_apellido,
-      },
-      {
+      /* {
         nombre: "telefono",
         campo: telefono,
       },
-      // {
-      //   nombre: "firewall",
-      //   campo: firewall,
-      // },
+      {
+        nombre: "firewall",
+        campo: firewall,
+      }, */
       {
         nombre: "ubicacion",
         campo: ubicacion,
@@ -73,6 +63,12 @@ router.post("/generate-code-register", async (req, res) => {
         code: -2,
         msg: `No ha ingresado el campo ${campoVacio.nombre}`,
       });
+
+    req.body.primer_nombre = nombres.split(' ')[0];
+    req.body.segundo_nombre = nombres.split(' ')[1];
+
+    req.body.primer_apellido = apellidos.split(' ')[0];
+    req.body.segundo_apellido = apellidos.split(' ')[1];
 
     // Crear codigo de registro de usuario
     const codeRegister = await responseT_code.createT_code_register(req);
@@ -101,6 +97,7 @@ router.post("/generate-code-register", async (req, res) => {
       msg: codeRegister.respuesta,
     });
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       code: -1,
       msg: "Ha ocurrido un error al intentar generar un codigo de registro",
@@ -114,10 +111,8 @@ router.post("/verify-code-register", async (req, res) => {
     const {
       codigo,
       correo,
-      primer_nombre,
-      segundo_nombre,
-      primer_apellido,
-      segundo_apellido,
+      nombres,
+      apellidos,
       telefono,
       ubicacion,
       password,
@@ -130,29 +125,21 @@ router.post("/verify-code-register", async (req, res) => {
         campo: correo,
       },
       {
-        nombre: "primer_nombre",
-        campo: primer_nombre,
+        nombre: "nombres",
+        campo: nombres,
       },
       {
-        nombre: "segundo_nombre",
-        campo: segundo_nombre,
-      },
-      {
-        nombre: "primer_apellido",
-        campo: primer_apellido,
-      },
-      {
-        nombre: "segundo_apellido",
-        campo: segundo_apellido,
+        nombre: "apellidos",
+        campo: apellidos,
       },
       {
         nombre: "password",
         campo: password,
       },
-      {
+      /* {
         nombre: "telefono",
         campo: telefono,
-      },
+      }, */
       {
         nombre: "codigo",
         campo: codigo,
@@ -180,6 +167,12 @@ router.post("/verify-code-register", async (req, res) => {
         code: -2,
         msg: `No ha ingresado el campo ${campoVacio.nombre}`,
       });
+
+    req.body.primer_nombre = nombres.split(' ')[0];
+    req.body.segundo_nombre = nombres.split(' ')[1];
+
+    req.body.primer_apellido = apellidos.split(' ')[0];
+    req.body.segundo_apellido = apellidos.split(' ')[1];
     
     // Verificar que no se el tiempo de expiración del codigo
     const usuarioCodigo = await responseT_code.readT_usuario_codigo(req);
@@ -431,10 +424,8 @@ router.put("/update-user-info", async (req, res) => {
   try {
     const {
       id_usuario,
-      primer_nombre,
-      segundo_nombre,
-      primer_apellido,
-      segundo_apellido,
+      nombres,
+      apellidos,
       telefono,
       ubicacion
     } = req.body;
@@ -445,25 +436,17 @@ router.put("/update-user-info", async (req, res) => {
         campo: id_usuario,
       },
       {
-        nombre: "primer_nombre",
-        campo: primer_nombre,
+        nombre: "nombres",
+        campo: nombres,
       },
       {
-        nombre: "segundo_nombre",
-        campo: segundo_nombre,
+        nombre: "apellidos",
+        campo: apellidos,
       },
-      {
-        nombre: "primer_apellido",
-        campo: primer_apellido,
-      },
-      {
-        nombre: "segundo_apellido",
-        campo: segundo_apellido,
-      },
-      {
+      /* {
         nombre: "telefono",
         campo: telefono,
-      },
+      }, */
       {
         nombre: "ubicacion",
         campo: ubicacion,
@@ -483,6 +466,12 @@ router.put("/update-user-info", async (req, res) => {
       code: -2,
       msg: `No ha ingresado el campo ${campoVacio.nombre}`,
       });
+
+    req.body.primer_nombre = nombres.split(' ')[0];
+    req.body.segundo_nombre = nombres.split(' ')[1];
+
+    req.body.primer_apellido = apellidos.split(' ')[0];
+    req.body.segundo_apellido = apellidos.split(' ')[1];
     
     // Retorna usuario actualizado si se logró el proceso
     const usuarioActualizado = await responseT_code.update_usu(req);
