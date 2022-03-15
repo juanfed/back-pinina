@@ -84,8 +84,8 @@ router.post("/generate-code-register", async (req, res) => {
     // Opciones del mensaje de registro
     const optionsEmail = codeRegisterMessage({
       codigo: codeRegister.codigo_verificacion,
-      primer_nombre,
-      primer_apellido,
+      primer_nombre: req.body.primer_nombre,
+      primer_apellido: req.body.primer_apellido,
     });
 
     // Enviar el email al usuario con el codigo
