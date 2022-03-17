@@ -53,6 +53,8 @@ app.use('/', require('./routes/hospitalizacion.routes'));
 app.use("/", require('./routes/code.routes'));
 app.use("/", require('./routes/inventarios.routes'));
 
+app.use('/', require('./routes/vacTVacuc.routes'));
+app.use('/', require('./routes/lists/tipSxx9z.list.routes.js'));
 //REPLACE
 
 app.use(require('./routes/routes'));
