@@ -55,6 +55,10 @@ app.use("/", require('./routes/inventarios.routes'));
 
 app.use('/', require('./routes/vacTVacuc.routes'));
 app.use('/', require('./routes/lists/tipSxx9z.list.routes.js'));
+
+app.use('/', require('./routes/exaTExamg.routes'));
+app.use('/', require('./routes/hisTExamg.son.routes'));
+app.use('/', require('./routes/modals/masoaNMb.modal.routes.js'));
 //REPLACE
 
 app.use(require('./routes/routes'));
