@@ -61,6 +61,8 @@ app.use('/', require('./routes/hisTExamg.son.routes'));
 app.use('/', require('./routes/modals/masoaNMb.modal.routes.js'));
 //REPLACE
 
+app.use('/', require('./routes/publicaciones.routes'));
+
 app.use(require('./routes/routes'));
 /// imagenes de manera publica
 app.use(express.static('src/uploads'));
