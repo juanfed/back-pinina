@@ -15,6 +15,7 @@ CREATE TABLE t_publicaciones(
 
 
 
+
 create table t_fotos_publicaciones(
 	id_foto_publicacion SERIAL PRIMARY KEY,
 	ruta_guardado TEXT NOT NULL,
