@@ -4,7 +4,7 @@ const readT_publicaciones = async() => {
 
     try {
 
-        let respuesta = await pool.query(`SELECT * FROM t_publicaciones`);
+        let respuesta = await pool.query(`SELECT * FROM v_t_publicaciones`);
 
         if (JSON.stringify(respuesta.rows) === '[]') {
             respuesta = null;
@@ -59,7 +59,7 @@ const buscarIdPublicacion = async(id) => {
 
     try {
 
-        let respuesta = await pool.query(`SELECT * FROM t_publicaciones WHERE id_publicacion = $1`,[id]);
+        let respuesta = await pool.query(`SELECT * FROM v_t_publicaciones WHERE id_publicacion = $1`,[id]);
 
         if (JSON.stringify(respuesta.rows) === '[]') {
             respuesta = null;
