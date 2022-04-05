@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const jwt = require("jsonwebtoken");
+const path = require('path')
 //const path = require('path');
 
 // Enable cors
@@ -69,6 +70,11 @@ app.use(require('./routes/routes'));
 app.use(express.static('src/uploads'));
 // Port
 const port = process.env.PORT || 4001;
+
+const publicPath = path.resolve(__dirname, './uploads/uploads2');
+console.log(publicPath)
+app.use(express.static(publicPath));
+
 
 // Listen
 app.listen(port, '0.0.0.0', () => {
