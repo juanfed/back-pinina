@@ -32,8 +32,8 @@ const crearComentario = async(req) => {
 const mostraComentarios = async(req) => {
 
     try {
-        
-        let respuesta = await pool.query(`SELECT * FROM t_comentarios_publicaciones`);
+        const {id_publicacion}  = req.body;
+        let respuesta = await pool.query(`SELECT * FROM f_comentarios_publicacion(${id_publicacion})`);
 
         if (JSON.stringify(respuesta.rows) === '[]') {
             respuesta = null;

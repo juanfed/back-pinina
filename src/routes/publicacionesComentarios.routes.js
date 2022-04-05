@@ -7,7 +7,7 @@ router.get('/mostrarcomentarios', async(req, res) => {
 
     try {
         
-        const comentarios = await respuestaT_comentarios.mostraComentarios();
+        const comentarios = await respuestaT_comentarios.mostraComentarios(req);
 
         if (!comentarios) {
             res.status(400).json({

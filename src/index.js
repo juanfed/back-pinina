@@ -61,6 +61,9 @@ app.use('/', require('./routes/exaTExamg.routes'));
 app.use('/', require('./routes/hisTExamg.son.routes'));
 app.use('/', require('./routes/modals/masoaNMb.modal.routes.js'));
 app.use('/', require('./routes/testimg.routes'));
+app.use('/', require('./routes/publicacionesComentarios.routes'));
+app.use('/', require('./routes/publicacionFotos.routes'));
+
 //REPLACE
 
 app.use('/', require('./routes/publicaciones.routes'));
