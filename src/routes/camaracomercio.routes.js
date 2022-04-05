@@ -15,4 +15,5 @@ router.post("/upload/camaraComercio", async(req, res) => {
     }
 });
 
+
 module.exports = router;
