@@ -1,0 +1,48 @@
+c
+CREATE TABLE t_publicaciones(
+	id_publicacion SERIAL PRIMARY KEY,
+	id_clientes INTEGER NOT NULL,
+	id_mascotas INTEGER NOT NULL,
+	descripcion_publicacion text,
+	fecha_publicacion date not null,
+	likes_publicacion INTEGER NOT NULL,
+	
+	CONSTRAINT t_clientes_t_publicacion_fk FOREIGN KEY (id_clientes) REFERENCES t_clientes(id_clientes),
+	CONSTRAINT t_mascotas_t_publicacion_fk FOREIGN KEY (id_mascotas) REFERENCES t_mascotas(id_mascotas)
+
+);
+
+
+
+
+
+create table t_fotos_publicaciones(
+	id_foto_publicacion SERIAL PRIMARY KEY,
+	ruta_guardado TEXT NOT NULL,
+	nombre_imagen text NOT NULL,
+	id_mascotas INTEGER NOT NULL,
+	consecutivo INTEGER,
+	constraint t_fotos_publicaciones_t_mascotas_fk FOREIGN KEY(id_mascotas) REFERENCES t_mascotas(id_mascotas)
+
+);
+
+CREATE TABLE t_comentarios_publicaciones(
+	comentario_id SERIAL PRIMARY KEY,
+	id_publicacion INTEGER NOT NULL,
+	comentario text NOT NULL,
+	id_clientes INTEGER NOT NULL,
+	CONSTRAINT t_comentarios_publicacion_t_clientes_fk FOREIGN KEY (id_clientes) REFERENCES t_clientes(id_clientes),
+	CONSTRAINT t_comentarios_publicacion_t_publicaciones_fk FOREIGN KEY (id_publicacion) REFERENCES t_publicaciones(id_publicacion)
+
+	
+);
+CREATE OR REPLACE FUNCTION f_insert_publicacion(p_id_clientes t_clientes.id_clientes%type, 
+												p_id_mascotas t_mascotas.id_mascotas%type, 
+												p_descripcion_publicacion t_publicaciones.descripcion_publicacion%type,
+											   	p_fecha_publicacion t_publicaciones.fecha_publicacion%type
+											   	) RETURNS SETOF t_publicaciones AS
+$$
+INSERT INTO t_publicaciones(id_clientes,id_mascotas,descripcion_publicacion,fecha_publicacion,likes_publicacion) VALUES
+(p_id_clientes,p_id_mascotas,p_descripcion_publicacion,p_fecha_publicacion,0) RETURNING *;
+$$
+language 'sql';
