@@ -16,15 +16,19 @@ CREATE TABLE t_publicaciones(
 
 
 
+
 create table t_fotos_publicaciones(
 	id_foto_publicacion SERIAL PRIMARY KEY,
+	id_publicacion INTEGER,
 	ruta_guardado TEXT NOT NULL,
 	nombre_imagen text NOT NULL,
 	id_mascotas INTEGER NOT NULL,
 	consecutivo INTEGER,
-	constraint t_fotos_publicaciones_t_mascotas_fk FOREIGN KEY(id_mascotas) REFERENCES t_mascotas(id_mascotas)
+	constraint t_fotos_publicaciones_t_mascotas_fk FOREIGN KEY(id_mascotas) REFERENCES t_mascotas(id_mascotas),
+	constraint t_fotos_publicaciones_t_publicaciones_fk FOREIGN KEY(id_publicacion) REFERENCES t_publicaciones(id_publicacion)
 
 );
+
 
 CREATE TABLE t_comentarios_publicaciones(
 	comentario_id SERIAL PRIMARY KEY,
@@ -46,3 +50,42 @@ INSERT INTO t_publicaciones(id_clientes,id_mascotas,descripcion_publicacion,fech
 (p_id_clientes,p_id_mascotas,p_descripcion_publicacion,p_fecha_publicacion,0) RETURNING *;
 $$
 language 'sql';
+
+
+CREATE OR REPLACE FUNCTION f_insert_foto_publicacion(p_ruta_guardado text, 
+													 p_nombre_imagen text,
+													 p_id_mascotas integer
+													
+												
+													) RETURNS SETOF t_fotos_publicaciones AS
+$$
+INSERT INTO t_fotos_publicaciones(ruta_guardado, nombre_imagen ,id_mascotas) VALUES
+(p_ruta_guardado ,p_nombre_imagen ,p_id_mascotas) RETURNING *;
+$$
+language 'sql';
+
+
+
+CREATE OR REPLACE FUNCTION f_insert_comentario_publicacion(p_id_publicacion integer, 
+													 p_comentario text,
+													 p_id_clientes integer
+													
+												
+													) RETURNS SETOF t_comentarios_publicaciones AS
+$$
+INSERT INTO t_comentarios_publicaciones(id_publicacion, comentario ,id_clientes) VALUES
+(p_id_publicacion, p_comentario, p_id_clientes) RETURNING *;
+$$
+language 'sql';
+
+
+select * from f_insert_publicacion(1,1,'Holiiiis','04-05-2022');
+select * from f_insert_comentario_publicacion(1,'que bonita', 2);
+select * from f_insert_foto_publicacion('src/uploads/uploads2/test.jpg','test.jpg', 1);
+
+
+
+create view  v_t_publicaciones as
+select p.id_publicacion,m.nombre_mascota, m.nivel_mascota, p.id_mascotas,p.fecha_publicacion, p.descripcion_publicacion, p.likes_publicacion, c.id_clientes, c.primer_nombre, c.primer_apellido, c.codigo_ubicacion_geografica_ciudad from t_publicaciones p 
+inner join t_clientes c on p.id_clientes=c.id_clientes
+inner join t_mascotas m on m.id_mascotas=p.id_mascotas
