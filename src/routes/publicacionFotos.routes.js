@@ -4,6 +4,12 @@ const respuestaT_fotos = require('../controllers/publicacionesFotos.controller')
 router.get('/mostrarfotos', async(req, res) => {
 
     try {
+        if(!req.body.id_publicacion){
+            res.status(400).json({
+                code: -1,
+                msg: `No envio el parametro id_publicacion`
+            })
+        }
         
         const fotos = await respuestaT_fotos.mostrarFotos(req);
 

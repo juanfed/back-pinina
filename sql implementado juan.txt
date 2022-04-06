@@ -54,15 +54,18 @@ language 'sql';
 
 CREATE OR REPLACE FUNCTION f_insert_foto_publicacion(p_ruta_guardado text, 
 													 p_nombre_imagen text,
-													 p_id_mascotas integer
-													
+													 p_id_mascotas integer,
+													p_id_publicacion INTEGER
 												
 													) RETURNS SETOF t_fotos_publicaciones AS
 $$
-INSERT INTO t_fotos_publicaciones(ruta_guardado, nombre_imagen ,id_mascotas) VALUES
-(p_ruta_guardado ,p_nombre_imagen ,p_id_mascotas) RETURNING *;
+INSERT INTO t_fotos_publicaciones(ruta_guardado, nombre_imagen ,id_mascotas, id_publicacion) VALUES
+(p_ruta_guardado ,p_nombre_imagen ,p_id_mascotas, p_id_publicacion) RETURNING *;
 $$
 language 'sql';
+
+
+
 
 
 
@@ -89,3 +92,22 @@ create view  v_t_publicaciones as
 select p.id_publicacion,m.nombre_mascota, m.nivel_mascota, p.id_mascotas,p.fecha_publicacion, p.descripcion_publicacion, p.likes_publicacion, c.id_clientes, c.primer_nombre, c.primer_apellido, c.codigo_ubicacion_geografica_ciudad from t_publicaciones p 
 inner join t_clientes c on p.id_clientes=c.id_clientes
 inner join t_mascotas m on m.id_mascotas=p.id_mascotas
+
+
+
+CREATE OR REPLACE FUNCTION f_fotos_publicacion(p_id_publicacion	integer									
+													) RETURNS SETOF t_fotos_publicaciones AS
+$$
+select * from t_fotos_publicaciones where id_publicacion=p_id_publicacion;
+$$
+language 'sql';
+
+
+
+CREATE OR REPLACE FUNCTION f_comentarios_publicacion(p_id_publicacion	integer									
+													) RETURNS SETOF t_comentarios_publicaciones AS
+$$
+select * from t_comentarios_publicaciones where id_publicacion = p_id_publicacion;
+$$
+language 'sql';
+	
