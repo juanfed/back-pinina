@@ -10,7 +10,7 @@ router.get('/mostrarcomentarios', async(req, res) => {
         const comentarios = await respuestaT_comentarios.mostraComentarios(req);
 
         if (!comentarios) {
-            res.status(400).json({
+            return res.status(400).json({
                 code: -1,
                 msg: `No existen comentarios en las publicaciones!`
             });
@@ -25,7 +25,7 @@ router.get('/mostrarcomentarios', async(req, res) => {
     } catch (error) {
         
         console.log(error);
-        res.status(500).json({
+        return  res.status(500).json({
             code: -1,
             error: `Error al consultar comentarios ${error}`
         });

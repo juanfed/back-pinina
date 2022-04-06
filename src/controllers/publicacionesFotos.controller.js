@@ -6,6 +6,7 @@ const mostrarFotos = async (req) => {
 
         const { id_publicacion } = req.body;
 
+
         let respuesta = await pool.query(`Select * from t_fotos_publicaciones where id_publicacion = ${id_publicacion}`);
 
         if (JSON.stringify(respuesta.rows) === '[]') {

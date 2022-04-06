@@ -9,12 +9,12 @@ router.get('/mostrarpublicaciones', async(req, res) => {
         const readT_publicaciones = await respuestaT_publicaciones.readT_publicaciones();
 
         if (!readT_publicaciones) {
-            res.status(400).json({
+            return res.status(400).json({
                 code: -1,
                 msg: `No hay ninguna publicación registrada!`,
             });
         } else {
-            res.status(200).json({
+            return res.status(200).json({
                 code: 1,
                 msg: `Consulta a publicaciones exitosamente!`,
                 publicaciones: readT_publicaciones
@@ -24,7 +24,7 @@ router.get('/mostrarpublicaciones', async(req, res) => {
     } catch (error) {
         
         console.log(error);
-        res.status(500).json({
+        return res.status(500).json({
             code: -1,
             error: `Error al mostrar publicaciones ${error}`
         });

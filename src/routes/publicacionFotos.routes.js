@@ -5,7 +5,7 @@ router.get('/mostrarfotos', async(req, res) => {
 
     try {
         if(!req.body.id_publicacion){
-            res.status(400).json({
+            return res.status(400).json({
                 code: -1,
                 msg: `No envio el parametro id_publicacion`
             })
@@ -14,12 +14,12 @@ router.get('/mostrarfotos', async(req, res) => {
         const fotos = await respuestaT_fotos.mostrarFotos(req);
 
         if (!fotos) {
-            res.status(400).json({
+            return res.status(400).json({
                 code: -1,
                 msg: `No existen fotos en la publicacion!`
             });
         } else {
-            res.status(200).json({
+            return res.status(200).json({
                 code: 1,
                 msg: `Consulta a fotos exitosamente!`,
                 fotos
@@ -29,7 +29,7 @@ router.get('/mostrarfotos', async(req, res) => {
     } catch (error) {
         
         console.log(error);
-        res.status(500).json({
+        return res.status(500).json({
             code: -1,
             error: `Error al consultar foto ${error}`
         });
