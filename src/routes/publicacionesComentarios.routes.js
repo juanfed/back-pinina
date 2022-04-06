@@ -6,7 +6,12 @@ const respuestaT_publicaciones = require('../controllers/publicaciones.controlle
 router.get('/mostrarcomentarios', async(req, res) => {
 
     try {
-        
+        if(!req.body.id_publicacion){
+            return res.status(400).json({
+                code: -1,
+                msg: `No envio el parametro id_publicacion`
+            })
+        }
         const comentarios = await respuestaT_comentarios.mostraComentarios(req);
 
         if (!comentarios) {
