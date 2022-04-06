@@ -3,9 +3,20 @@ const pool = require('../../database/dbConection');
 const readT_publicaciones = async() => {
 
     try {
+        
 
         let respuesta = await pool.query(`SELECT * FROM v_t_publicaciones`);
+        
 
+
+        for (let i = 0; i < respuesta.rows.length; i++) {
+            let id_publicacion = respuesta.rows[i].id_publicacion;
+            let respuesta2 = await pool.query(`select * from f_fotos_publicacion_id(${id_publicacion})`);
+            respuesta.rows[i].fotos = respuesta2.rows;
+        }
+      
+      
+       
         if (JSON.stringify(respuesta.rows) === '[]') {
             respuesta = null;
         } else {

@@ -7,7 +7,7 @@ router.get('/mostrarpublicaciones', async(req, res) => {
     try {
 
         const readT_publicaciones = await respuestaT_publicaciones.readT_publicaciones();
-
+     
         if (!readT_publicaciones) {
             return res.status(400).json({
                 code: -1,
