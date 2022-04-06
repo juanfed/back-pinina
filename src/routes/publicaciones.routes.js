@@ -215,11 +215,11 @@ router.delete('/eliminarpublicaciones', async(req, res) => {
 
 });
 
-router.get('/darlike', async(req, res) => {
+router.get('/darlike/:id_publicacion', async(req, res) => {
 
     try {
 
-        const { id_publicacion } = req.body;
+        const  id_publicacion  = req.params.id_publicacion;
 
         const campos = [
             {
