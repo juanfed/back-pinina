@@ -26,7 +26,7 @@ router.get('/mostrarpublicaciones', async(req, res) => {
         console.log(error);
         res.status(500).json({
             code: -1,
-            msg: err.message
+            error: `Error al mostrar publicaciones ${error}`
         });
 
     }
@@ -82,7 +82,7 @@ router.post('/crearpublicaciones', async(req, res) => {
         console.log(error);
         res.status(500).json({
             code: -1,
-            msg: err.message
+            error: `Error al crear publicación ${error}`
         });
 
     }
@@ -151,7 +151,7 @@ router.put('/actualizarpublicaciones', async(req, res) => {
         console.log(error);
         res.status(500).json({
             code: -1,
-            msg: err.message
+            error: `Error al actualizar publicación ${error}`
         });
 
     }
@@ -208,7 +208,7 @@ router.delete('/eliminarpublicaciones', async(req, res) => {
         console.log(error);
         res.status(500).json({
             code: -1,
-            msg: err.message
+            error: `Error en eliminar publicación ${error}`
         });
 
     }

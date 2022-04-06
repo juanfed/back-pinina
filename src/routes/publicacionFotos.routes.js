@@ -1,25 +1,22 @@
-
 const router = require("express").Router();
 const respuestaT_fotos = require('../controllers/publicacionesFotos.controller')
-
-
 
 router.get('/mostrarfotos', async(req, res) => {
 
     try {
         
-        const comentarios = await respuestaT_fotos.mostrarFotos(req);
+        const fotos = await respuestaT_fotos.mostrarFotos(req);
 
-        if (!comentarios) {
+        if (!fotos) {
             res.status(400).json({
                 code: -1,
-                msg: `No existen comentarios en las publicaciones!`
+                msg: `No existen fotos en la publicacion!`
             });
         } else {
             res.status(200).json({
                 code: 1,
-                msg: `Consulta a comentarios exitosamente!`,
-                comentarios
+                msg: `Consulta a fotos exitosamente!`,
+                fotos
             });
         }
 
@@ -28,26 +25,11 @@ router.get('/mostrarfotos', async(req, res) => {
         console.log(error);
         res.status(500).json({
             code: -1,
-            msg: err.message
+            error: `Error al consultar foto ${error}`
         });
 
     }
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 module.exports = router;

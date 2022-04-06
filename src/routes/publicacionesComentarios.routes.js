@@ -27,7 +27,7 @@ router.get('/mostrarcomentarios', async(req, res) => {
         console.log(error);
         res.status(500).json({
             code: -1,
-            msg: err.message
+            error: `Error al consultar comentarios ${error}`
         });
 
     }
@@ -92,7 +92,7 @@ router.post('/crearcomentarios', async(req, res) => {
         console.log(error);
         res.status(500).json({
             code: -1,
-            msg: err.message
+            error: `Error al crear comentario ${error}`
         });
 
     }
@@ -170,7 +170,7 @@ router.put('/actualizarcomentarios', async(req, res) => {
         console.log(error);
         res.status(500).json({
             code: -1,
-            msg: err.message
+            error: `Error al actualizar comentario ${error}`
         });
 
     }
@@ -240,7 +240,7 @@ router.delete('/eliminarcomentario', async(req, res) => {
         console.log(error);
         res.status(500).json({
             code: -1,
-            msg: err.message
+            error: `Error al eliminar comentario ${error}`
         });
 
     }

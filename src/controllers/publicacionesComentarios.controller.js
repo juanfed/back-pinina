@@ -24,7 +24,7 @@ const crearComentario = async(req) => {
         
     } catch (error) {
         console.log(error);
-        throw new Error(`${error}`);
+        throw new Error(`Error al crear comentario ${error}`);
     }
 
 }
@@ -45,7 +45,7 @@ const mostraComentarios = async(req) => {
         
     } catch (error) {
         console.log(error);
-        throw new Error(`${error}`);
+        throw new Error(`Error al mostrar comentarios ${error}`);
     }
 
 }
@@ -66,7 +66,7 @@ const comentarioIdExiste = async(id) => {
         
     } catch (error) {
         console.log(error);
-        throw new Error(`${error}`);
+        throw new Error(`Error al consultar id comentario-existe ${error}`);
     }
 
 }
@@ -96,7 +96,7 @@ const actualizarComentario = async(req) => {
         
     } catch (error) {
         console.log(error);
-        throw new Error(`${error}`);
+        throw new Error(`Error al actualizar comentario ${error}`);
     }
 
 }
@@ -111,7 +111,7 @@ const eliminarComentario = async(id) => {
         
     } catch (error) {
         console.log(error);
-        throw new Error(`${error}`);
+        throw new Error(`Error al eliminar comentario ${error}`);
     }
 
 }

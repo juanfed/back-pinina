@@ -16,7 +16,7 @@ const readT_publicaciones = async() => {
         
     } catch (error) {
         console.log(error);
-        throw new Error(`${error}`);
+        throw new Error(`Error al consultar comentarios ${error}`);
     }
 
 }
@@ -50,7 +50,7 @@ const crearPublicacion = async(req) => {
         
     } catch (error) {
         console.log(error);
-        throw new Error(`${error}`);
+        throw new Error(`Error al crear publicación ${error}`);
     }
 
 }
@@ -71,7 +71,7 @@ const buscarIdPublicacion = async(id) => {
         
     } catch (error) {
         console.log(error);
-        throw new Error(`${error}`);
+        throw new Error(`Error al buscar Id publicación ${error}`);
     }
 
 }
@@ -106,7 +106,7 @@ const actualizarPublicacion = async(req) => {
         
     } catch (error) {
         console.log(error);
-        throw new Error(`${error}`);
+        throw new Error(`Error al actualizar publicación ${error}`);
     }
 
 }
@@ -121,7 +121,7 @@ const eliminarPublicacion = async(id) => {
         
     } catch (error) {
         console.log(error);
-        throw new Error(`${error}`);
+        throw new Error(`Error al eliminar publicación ${error}`);
     }
 
 }
