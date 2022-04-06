@@ -1,10 +1,11 @@
 const router = require("express").Router();
 const respuestaT_fotos = require('../controllers/publicacionesFotos.controller')
 
-router.get('/mostrarfotos', async(req, res) => {
+router.get('/mostrarfotos/:id_publicacion', async(req, res) => {
 
     try {
-        if(!req.body.id_publicacion){
+       
+        if(!req.params.id_publicacion){
             return res.status(400).json({
                 code: -1,
                 msg: `No envio el parametro id_publicacion`

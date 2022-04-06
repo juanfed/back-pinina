@@ -4,7 +4,7 @@ const mostrarFotos = async (req) => {
 
     try {
 
-        const { id_publicacion } = req.body;
+        const id_publicacion  = req.params.id_publicacion;
 
 
         let respuesta = await pool.query(`select * from f_fotos_publicacion_id(${id_publicacion})`);
