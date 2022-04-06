@@ -126,10 +126,32 @@ const eliminarPublicacion = async(id) => {
 
 }
 
+const darLikePublicacion = async(id) => {
+
+    try {
+
+        let respuesta = await pool.query(`SELECT * FROM f_like_publicacion($1)`,[id]);
+
+        if (JSON.stringify(respuesta.rows) === '[]') {
+            respuesta = null;
+        } else {
+            respuesta = respuesta.rows[0].likes_publicacion;
+        }
+
+        return respuesta;
+        
+    } catch (error) {
+        console.log(error);
+        throw new Error(`Error al dar like a la publicación ${error}`);
+    }
+
+}
+
 module.exports = {
     readT_publicaciones,
     crearPublicacion,
     buscarIdPublicacion,
     actualizarPublicacion,
-    eliminarPublicacion
+    eliminarPublicacion,
+    darLikePublicacion
 };

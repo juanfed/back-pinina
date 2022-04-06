@@ -66,12 +66,12 @@ router.post('/crearpublicaciones', async(req, res) => {
         const publicacionCreada = await respuestaT_publicaciones.crearPublicacion(req);
 
         if (!publicacionCreada) {
-            res.status(400).json({
+            return res.status(400).json({
                 code: -1,
                 msg: `No se pudo crear la publicación!`
             });
         } else {
-            res.status(200).json({
+            return res.status(200).json({
                 code: 1,
                 msg: `publicación creada exitosamente!`
             });
@@ -80,7 +80,7 @@ router.post('/crearpublicaciones', async(req, res) => {
     } catch (error) {
         
         console.log(error);
-        res.status(500).json({
+        return res.status(500).json({
             code: -1,
             error: `Error al crear publicación ${error}`
         });
@@ -135,12 +135,12 @@ router.put('/actualizarpublicaciones', async(req, res) => {
         const publicacionActualizada = await respuestaT_publicaciones.actualizarPublicacion(req);
 
         if (!publicacionActualizada) {
-            res.status(400).json({
+            return res.status(400).json({
                 code: -1,
                 msg: `No se pudo actualizar la publicación!`
             });
         } else {
-            res.status(200).json({
+            return res.status(200).json({
                 code: 1,
                 msg: `publicación actualizada exitosamente!`
             });
@@ -149,7 +149,7 @@ router.put('/actualizarpublicaciones', async(req, res) => {
     } catch (error) {
         
         console.log(error);
-        res.status(500).json({
+        return res.status(500).json({
             code: -1,
             error: `Error al actualizar publicación ${error}`
         });
@@ -192,12 +192,12 @@ router.delete('/eliminarpublicaciones', async(req, res) => {
         const publicacionEliminada = await respuestaT_publicaciones.eliminarPublicacion(id_publicacion);
 
         if (!publicacionEliminada) {
-            res.status(400).json({
+            return res.status(400).json({
                 code: -1,
                 msg: `No se pudo eliminar la publicación!`
             });
         } else {
-            res.status(200).json({
+            return res.status(200).json({
                 code: 1,
                 msg: `publicación ha sido eliminada exitosamente!`
             });
@@ -206,9 +206,67 @@ router.delete('/eliminarpublicaciones', async(req, res) => {
     } catch (error) {
         
         console.log(error);
-        res.status(500).json({
+        return res.status(500).json({
             code: -1,
             error: `Error en eliminar publicación ${error}`
+        });
+
+    }
+
+});
+
+router.get('/darlike', async(req, res) => {
+
+    try {
+
+        const { id_publicacion } = req.body;
+
+        const campos = [
+            {
+                nombre: 'id_publicacion',
+                campo: id_publicacion
+            }
+        ];
+
+        const camposVacios = validarCampos(campos);
+
+        if (camposVacios) {
+            return res.status(400).json({
+                code: -1,
+                msg: `No ha ingresado el campo ${camposVacios.nombre}`,
+            });
+        }
+
+        const publicacionExiste = await respuestaT_publicaciones.buscarIdPublicacion(id_publicacion);
+
+        if (!publicacionExiste) {
+            return res.status(400).json({
+                code: -1,
+                msg: `La publicación con id: ${id_publicacion} no existe!`,
+            });
+        }
+
+        const likePublicacion = await respuestaT_publicaciones.darLikePublicacion(id_publicacion);
+
+        if (!likePublicacion) {
+            return res.status(400).json({
+                code: -1,
+                msg: `No se pudo eliminar la publicación!`
+            });
+        } else {
+            return res.status(200).json({
+                code: 1,
+                msg: `Like a la publicación exitosamente!`,
+                likePublicacion
+            });
+        }
+        
+    } catch (error) {
+        
+        console.log(error);
+        return res.status(500).json({
+            code: -1,
+            error: `Error al dar like a la publicación ${error}`
         });
 
     }

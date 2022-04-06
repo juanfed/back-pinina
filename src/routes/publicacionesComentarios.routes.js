@@ -20,7 +20,7 @@ router.get('/mostrarcomentarios', async(req, res) => {
                 msg: `No existen comentarios en las publicaciones!`
             });
         } else {
-            res.status(200).json({
+            return res.status(200).json({
                 code: 1,
                 msg: `Consulta a comentarios exitosamente!`,
                 comentarios
@@ -81,12 +81,12 @@ router.post('/crearcomentarios', async(req, res) => {
         const comentarioCreado = await respuestaT_comentarios.crearComentario(req);
 
         if (!comentarioCreado) {
-            res.status(400).json({
+            return res.status(400).json({
                 code: -1,
                 msg: `No se pudo crear el comentario!`
             });
         } else {
-            res.status(200).json({
+            return res.status(200).json({
                 code: 1,
                 msg: `comentario creado exitosamente!`
             });
@@ -95,7 +95,7 @@ router.post('/crearcomentarios', async(req, res) => {
     } catch (error) {
         
         console.log(error);
-        res.status(500).json({
+        return res.status(500).json({
             code: -1,
             error: `Error al crear comentario ${error}`
         });
@@ -159,12 +159,12 @@ router.put('/actualizarcomentarios', async(req, res) => {
         const comentarioActualizado = await respuestaT_comentarios.actualizarComentario(req);
 
         if (!comentarioActualizado) {
-            res.status(400).json({
+            return res.status(400).json({
                 code: -1,
                 msg: `No se pudo actualizar el comentario!`
             });
         } else {
-            res.status(200).json({
+            return res.status(200).json({
                 code: 1,
                 msg: `comentario actualizado exitosamente!`
             });
@@ -173,7 +173,7 @@ router.put('/actualizarcomentarios', async(req, res) => {
     } catch (error) {
         
         console.log(error);
-        res.status(500).json({
+        return res.status(500).json({
             code: -1,
             error: `Error al actualizar comentario ${error}`
         });
@@ -229,12 +229,12 @@ router.delete('/eliminarcomentario', async(req, res) => {
         const comentarioEliminado = await respuestaT_comentarios.eliminarComentario(comentario_id);
 
         if (!comentarioEliminado) {
-            res.status(400).json({
+            return res.status(400).json({
                 code: -1,
                 msg: `No se pudo eliminar el comentario!`
             });
         } else {
-            res.status(200).json({
+            return res.status(200).json({
                 code: 1,
                 msg: `Comentario ha sido eliminado exitosamente!`
             });
@@ -243,7 +243,7 @@ router.delete('/eliminarcomentario', async(req, res) => {
     } catch (error) {
         
         console.log(error);
-        res.status(500).json({
+        return res.status(500).json({
             code: -1,
             error: `Error al eliminar comentario ${error}`
         });
