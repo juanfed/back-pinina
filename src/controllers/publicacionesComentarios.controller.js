@@ -54,7 +54,7 @@ const comentarioIdExiste = async(id) => {
 
     try {
 
-        let respuesta = await pool.query(`SELECT * FROM t_comentarios_publicaciones WHERE comentario_id = $1`,[id]);
+        let respuesta = await pool.query(`select * from f_comentario_id($1)`,[id]);
 
         if (JSON.stringify(respuesta.rows) === '[]') {
             respuesta = null;
@@ -100,7 +100,7 @@ const actualizarComentario = async(req) => {
     }
 
 }
-
+/*
 const eliminarComentario = async(id) => {
 
     try {
@@ -115,11 +115,11 @@ const eliminarComentario = async(id) => {
     }
 
 }
-
+*/
 module.exports = {
     crearComentario,
     mostraComentarios,
     comentarioIdExiste,
-    actualizarComentario,
-    eliminarComentario
+    actualizarComentario
+    //eliminarComentario
 };
