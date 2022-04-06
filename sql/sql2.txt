@@ -1,0 +1,11 @@
+CREATE OR REPLACE FUNCTION f_fotos_publicacion_id(p_id_publicacion integer) RETURNS SETOF t_fotos_publicaciones AS
+$$
+Select * from t_fotos_publicaciones where id_publicacion = p_id_publicacion;
+$$
+language 'sql';
+
+CREATE OR REPLACE FUNCTION f_comentario_id(p_id_comentario integer) RETURNS SETOF t_comentarios_publicaciones AS
+$$
+SELECT * FROM t_comentarios_publicaciones WHERE comentario_id = p_id_comentario;
+$$
+language 'sql';
