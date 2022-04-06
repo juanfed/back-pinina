@@ -11,8 +11,11 @@ const readT_publicaciones = async() => {
 
         for (let i = 0; i < respuesta.rows.length; i++) {
             let id_publicacion = respuesta.rows[i].id_publicacion;
+
             let respuesta2 = await pool.query(`select * from f_fotos_publicacion_id(${id_publicacion})`);
+            let respuesta3 = await pool.query(`SELECT * FROM f_comentarios_publicacion(${id_publicacion})`);
             respuesta.rows[i].fotos = respuesta2.rows;
+            respuesta.rows[i].comentarios = respuesta3.rows;
         }
       
       
