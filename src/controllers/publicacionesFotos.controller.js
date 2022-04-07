@@ -32,9 +32,10 @@ const subirFotoPublicacion = async (id_publicacion, id_mascotas, req) => {
 
         } else {
             let out;
-            let consecutivo = 1;
+            
         
             if (req.files.imagen[1]==undefined) {
+                console.log('1 foto')
                 const imagen = req.files.imagen;
                 const uploadPath = path.join('src/uploads/uploads2/', imagen.name);
                 const nombre_imagen = imagen.name;
@@ -44,21 +45,23 @@ const subirFotoPublicacion = async (id_publicacion, id_mascotas, req) => {
                     }
                     console.log('File uploaded to ' + uploadPath);
                 })
-                const imagenSubida = await pool.query('select * from f_insert_foto_publicacion($1,$2,$3,$4,$5)', [uploadPath, nombre_imagen, id_mascotas, id_publicacion, consecutivo]);
+                const imagenSubida = await pool.query('select * from f_insert_foto_publicacion($1,$2,$3,$4,$5)', [uploadPath, nombre_imagen, id_mascotas, id_publicacion, 1]);
             } else {
                 for (let i = 0; i < Object.keys(req.files.imagen).length; i++) {
-                    if (!(consecutivo > 5)) {
+                    if ((i+1) <= 5) {
+                        console.log(i+1)
                         const imagen = req.files.imagen[i];
                         const uploadPath = path.join('src/uploads/uploads2/', imagen.name);
 
                         const nombre_imagen = imagen.name;
-                        const imagenSubida = await pool.query('select * from f_insert_foto_publicacion($1,$2,$3,$4,$5)', [uploadPath, nombre_imagen, id_mascotas, id_publicacion, consecutivo]);
+                         
+                        const imagenSubida = await pool.query('select * from f_insert_foto_publicacion($1,$2,$3,$4,$5)', [uploadPath, nombre_imagen, id_mascotas, id_publicacion, (i+1)]);
                         imagen.mv(uploadPath, (err) => {
                             if (err) {
                                 throw new Error("Error subiendo imagen " + err)
                             }
                             console.log('File uploaded to ' + uploadPath);
-                            consecutivo++;
+                            
                         })
                         
                         out += imagenSubida;
