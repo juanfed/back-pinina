@@ -1,5 +1,5 @@
 const pool = require('../../database/dbConection');
-
+const path = require('path')
 const mostrarFotos = async (req) => {
 
     try {
@@ -32,8 +32,11 @@ const subirFotoPublicacion = async (id_publicacion, id_mascotas, req) => {
 
         } else {
             let out;
-            for (let i = 0; i < req.files.length; i++) {
-                const { imagen } = req.files[i];
+            
+            for (let i = 0; i < Object.keys(req.files.imagen).length; i++) {
+               
+                const  imagen  = req.files.imagen[i];
+               
                 const uploadPath = path.join('src/uploads/uploads2/', imagen.name);
                 const nombre_imagen = imagen.name;
                 imagen.mv(uploadPath, (err) => {
@@ -45,7 +48,7 @@ const subirFotoPublicacion = async (id_publicacion, id_mascotas, req) => {
                 const imagenSubida = await pool.query('select * from f_insert_foto_publicacion($1,$2,$3,$4)',[uploadPath, nombre_imagen, id_mascotas, id_publicacion]);
                 out += imagenSubida;
             }
-
+           
             return out;
             
         }
