@@ -33,10 +33,8 @@ const subirFotoPublicacion = async (id_publicacion, id_mascotas, req) => {
         } else {
             let out;
             let consecutivo = 1;
-            for (let i = 0; i < Object.keys(req.files.imagen).length; i++) {
-               if(!(consecutivo>5)){
-                const  imagen  = req.files.imagen[i];
-               
+            if (!req.files.imagen[1]) {
+                const imagen = req.files.imagen;
                 const uploadPath = path.join('src/uploads/uploads2/', imagen.name);
                 const nombre_imagen = imagen.name;
                 imagen.mv(uploadPath, (err) => {
@@ -44,16 +42,32 @@ const subirFotoPublicacion = async (id_publicacion, id_mascotas, req) => {
                         throw new Error("Error subiendo imagen " + err)
                     }
                     console.log('File uploaded to ' + uploadPath);
-                    consecutivo++;
                 })
-                const imagenSubida = await pool.query('select * from f_insert_foto_publicacion($1,$2,$3,$4,$5)',[uploadPath, nombre_imagen, id_mascotas, id_publicacion, consecutivo]);
-                out += imagenSubida;}else{
-                    return 'limite de fotos alcanzado';
+                const imagenSubida = await pool.query('select * from f_insert_foto_publicacion($1,$2,$3,$4,$5)', [uploadPath, nombre_imagen, id_mascotas, id_publicacion, consecutivo]);
+            } else {
+                for (let i = 0; i < Object.keys(req.files.imagen).length; i++) {
+                    if (!(consecutivo > 5)) {
+                        const imagen = req.files.imagen[i];
+                        const uploadPath = path.join('src/uploads/uploads2/', imagen.name);
+
+                        const nombre_imagen = imagen.name;
+                        imagen.mv(uploadPath, (err) => {
+                            if (err) {
+                                throw new Error("Error subiendo imagen " + err)
+                            }
+                            console.log('File uploaded to ' + uploadPath);
+                            consecutivo++;
+                        })
+                        
+                        out += imagenSubida;
+                    } else {
+                        return 'limite de fotos alcanzado';
+                    }
                 }
             }
-           
+
             return out;
-            
+
         }
 
     } catch (error) {
@@ -61,7 +75,7 @@ const subirFotoPublicacion = async (id_publicacion, id_mascotas, req) => {
     }
 }
 
-module.exports = { 
+module.exports = {
     mostrarFotos,
     subirFotoPublicacion
- };
+};
