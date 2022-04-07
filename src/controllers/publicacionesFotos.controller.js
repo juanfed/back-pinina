@@ -24,11 +24,10 @@ const mostrarFotos = async (req) => {
 
 }
 
-
-
 const subirFotoPublicacion = async (id_publicacion, id_mascotas, req) => {
     try {
         if (!req.files || Object.keys(req.files).length === 0 || !req.files.imagen) {
+
             return null;
 
         } else {
@@ -46,10 +45,10 @@ const subirFotoPublicacion = async (id_publicacion, id_mascotas, req) => {
                 const imagenSubida = await pool.query('select * from f_insert_foto_publicacion($1,$2,$3,$4)',[uploadPath, nombre_imagen, id_mascotas, id_publicacion]);
                 out += imagenSubida;
             }
+
             return out;
+            
         }
-
-
 
     } catch (error) {
         throw new Error('Error subirFotoPublicacion ' + error);

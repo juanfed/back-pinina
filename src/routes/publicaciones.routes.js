@@ -39,7 +39,6 @@ router.post('/crearpublicaciones', async(req, res) => {
     try {
 
         const { id_clientes, id_mascotas, descripcion_publicacion} = req.body;
-        console.log(id_clientes)
 
         const campos = [
             {
