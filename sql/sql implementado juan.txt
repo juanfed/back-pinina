@@ -98,10 +98,16 @@ language 'sql';
 
 
 
+
 CREATE OR REPLACE FUNCTION f_comentarios_publicacion(p_id_publicacion	integer									
-													) RETURNS SETOF t_comentarios_publicaciones AS
+													) RETURNS SETOF v_comentarios_publicaciones AS
 $$
-select * from t_comentarios_publicaciones where id_publicacion = p_id_publicacion;
+select co.comentario_id, co.id_publicacion, co.comentario, co.id_clientes, co.fecha_comentario, c.primer_nombre, c.primer_apellido from t_comentarios_publicaciones co
+inner join t_clientes c on c.id_clientes=co.id_clientes where co.id_publicacion=p_id_publicacion;
 $$
 language 'sql';
-	
+
+
+create view v_comentarios_publicaciones as select co.comentario_id, co.id_publicacion, co.comentario, co.id_clientes, co.fecha_comentario, c.primer_nombre, c.primer_apellido from t_comentarios_publicaciones co
+inner join t_clientes c on c.id_clientes=co.id_clientes 
+

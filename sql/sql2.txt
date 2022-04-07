@@ -9,3 +9,17 @@ $$
 SELECT * FROM t_comentarios_publicaciones WHERE comentario_id = p_id_comentario;
 $$
 language 'sql';
+
+
+CREATE OR REPLACE FUNCTION f_like_publicacion(p_id_publicacion	integer									
+													) RETURNS setof t_publicaciones AS
+$$
+declare
+likes integer;
+begin
+select likes_publicacion into likes from t_publicaciones where id_publicacion=p_id_publicacion;
+likes := likes +1;
+return query update t_publicaciones set likes_publicacion = likes where id_publicacion=p_id_publicacion returning *;
+end
+$$
+language 'plpgsql';
