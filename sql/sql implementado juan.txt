@@ -64,15 +64,15 @@ language 'sql';
 
 
 
-CREATE OR REPLACE FUNCTION f_insert_comentario_publicacion(p_id_publicacion integer, 
-													 p_comentario text,
-													 p_id_clientes integer
-													
-												
-													) RETURNS SETOF t_comentarios_publicaciones AS
+CREATE OR REPLACE FUNCTION f_insert_comentario_publicacion(
+	p_id_publicacion integer, 
+	p_comentario text,
+	p_id_clientes integer,
+	p_fecha_comentario date
+) RETURNS SETOF t_comentarios_publicaciones AS
 $$
-INSERT INTO t_comentarios_publicaciones(id_publicacion, comentario ,id_clientes) VALUES
-(p_id_publicacion, p_comentario, p_id_clientes) RETURNING *;
+	INSERT INTO t_comentarios_publicaciones(id_publicacion, comentario ,id_clientes, fecha_comentario) VALUES
+	(p_id_publicacion, p_comentario, p_id_clientes, p_fecha_comentario) RETURNING *;
 $$
 language 'sql';
 
