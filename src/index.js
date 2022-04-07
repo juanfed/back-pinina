@@ -3,7 +3,8 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const jwt = require("jsonwebtoken");
-const path = require('path')
+const path = require('path');
+const fileUpload = require('express-fileupload');
 //const path = require('path');
 
 // Enable cors
@@ -11,6 +12,14 @@ const configCors = {
   origin: process.env.FRONTEND_URL,
 };
 app.use(cors());
+
+
+
+//middleware para subir archivos
+app.use(fileUpload({
+  useTempFiles : true,
+  tempFileDir : '/tmp/'
+}));
 
 // Permision to read values by json format
 app.use(express.json());
