@@ -32,9 +32,9 @@ const subirFotoPublicacion = async (id_publicacion, id_mascotas, req) => {
 
         } else {
             let out;
-            
+            let consecutivo = 1;
             for (let i = 0; i < Object.keys(req.files.imagen).length; i++) {
-               
+               if(!(consecutivo>5)){
                 const  imagen  = req.files.imagen[i];
                
                 const uploadPath = path.join('src/uploads/uploads2/', imagen.name);
@@ -44,9 +44,12 @@ const subirFotoPublicacion = async (id_publicacion, id_mascotas, req) => {
                         throw new Error("Error subiendo imagen " + err)
                     }
                     console.log('File uploaded to ' + uploadPath);
+                    consecutivo++;
                 })
-                const imagenSubida = await pool.query('select * from f_insert_foto_publicacion($1,$2,$3,$4)',[uploadPath, nombre_imagen, id_mascotas, id_publicacion]);
-                out += imagenSubida;
+                const imagenSubida = await pool.query('select * from f_insert_foto_publicacion($1,$2,$3,$4,$5)',[uploadPath, nombre_imagen, id_mascotas, id_publicacion, consecutivo]);
+                out += imagenSubida;}else{
+                    return 'limite de fotos alcanzado';
+                }
             }
            
             return out;
