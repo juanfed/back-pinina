@@ -5,12 +5,17 @@ const crearComentario = async(req) => {
     try {
 
         const { id_publicacion, comentario, id_clientes} = req.body;
+
+        const date = new Date;
+
+        const fecha_comentario = Intl.DateTimeFormat('es-MX').format(date);
         
-        let respuesta = await pool.query(`SELECT * FROM f_insert_comentario($1, $2, $3)`,
+        let respuesta = await pool.query(`SELECT * FROM f_insert_comentario_publicacion($1, $2, $3, $4)`,
             [
                 id_publicacion,
                 comentario,
-                id_clientes
+                id_clientes,
+                fecha_comentario
             ]
         );
 
