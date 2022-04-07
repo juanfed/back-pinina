@@ -27,13 +27,14 @@ const mostrarFotos = async (req) => {
 const subirFotoPublicacion = async (id_publicacion, id_mascotas, req) => {
     try {
         if (!req.files || Object.keys(req.files).length === 0 || !req.files.imagen) {
-
+       
             return null;
 
         } else {
             let out;
             let consecutivo = 1;
-            if (!req.files.imagen[1]) {
+        
+            if (req.files.imagen[1]==undefined) {
                 const imagen = req.files.imagen;
                 const uploadPath = path.join('src/uploads/uploads2/', imagen.name);
                 const nombre_imagen = imagen.name;
