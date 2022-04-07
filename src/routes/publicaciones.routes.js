@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const validarCampos = require("../utils/validateFields");
 const respuestaT_publicaciones = require('../controllers/publicaciones.controller');
+const respuestaT_fotos_publicaciones = require('../controllers/publicacionesFotos.controller');
 
 router.get('/mostrarpublicaciones', async(req, res) => {
 
@@ -39,6 +40,7 @@ router.post('/crearpublicaciones', async(req, res) => {
 
         const { id_clientes, id_mascotas, descripcion_publicacion} = req.body;
 
+
         const campos = [
             {
                 nombre: 'id_clientes',
@@ -65,6 +67,8 @@ router.post('/crearpublicaciones', async(req, res) => {
 
         const publicacionCreada = await respuestaT_publicaciones.crearPublicacion(req);
 
+        const fotosGuardadas = await respuestaT_fotos_publicaciones.subirFotoPublicacion(publicacionCreada.id_publicacion, id_mascotas, req);
+
         if (!publicacionCreada) {
             return res.status(400).json({
                 code: -1,
@@ -73,7 +77,9 @@ router.post('/crearpublicaciones', async(req, res) => {
         } else {
             return res.status(200).json({
                 code: 1,
-                msg: `publicación creada exitosamente!`
+                msg: `publicación creada exitosamente!`,
+                publicacionCreada,
+                fotosGuardadas
             });
         }
         

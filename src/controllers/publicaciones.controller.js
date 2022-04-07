@@ -57,7 +57,7 @@ const crearPublicacion = async(req) => {
         if (JSON.stringify(respuesta.rows) === '[]') {
             respuesta = null;
         } else {
-            respuesta = respuesta.rows;
+            respuesta = respuesta.rows[0];
         }
 
         return respuesta;

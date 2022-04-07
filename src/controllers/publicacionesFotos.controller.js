@@ -56,4 +56,7 @@ const subirFotoPublicacion = async (id_publicacion, id_mascotas, req) => {
     }
 }
 
-module.exports = { mostrarFotos };
+module.exports = { 
+    mostrarFotos,
+    subirFotoPublicacion
+ };
