@@ -51,6 +51,7 @@ const subirFotoPublicacion = async (id_publicacion, id_mascotas, req) => {
                         const uploadPath = path.join('src/uploads/uploads2/', imagen.name);
 
                         const nombre_imagen = imagen.name;
+                        const imagenSubida = await pool.query('select * from f_insert_foto_publicacion($1,$2,$3,$4,$5)', [uploadPath, nombre_imagen, id_mascotas, id_publicacion, consecutivo]);
                         imagen.mv(uploadPath, (err) => {
                             if (err) {
                                 throw new Error("Error subiendo imagen " + err)
