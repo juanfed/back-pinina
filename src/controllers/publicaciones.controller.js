@@ -8,7 +8,7 @@ const readT_publicaciones = async(req) => {
         let respuesta = await pool.query(`SELECT * FROM f_publicaciones_seguidos(${req.params.id_clientes})`);
         
 
-
+        //por cada publicacion se extraen los datos de fotos de publicacion, comentarios y la foto de perfil de la mascota
         for (let i = 0; i < respuesta.rows.length; i++) {
             let id_publicacion = respuesta.rows[i].id_publicacion;
 
