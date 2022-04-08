@@ -438,6 +438,67 @@ const readT_colores_tipomascota = async (id_tipo_mascota) => {
   }
 };
 
+const subirFotoPerfilMascota = async (req) => {
+  //método para subir foto de perfil de mascota
+  try {
+    if (!req.files || Object.keys(req.files).length === 0 || !req.files.imagen) {
+
+      return null;
+
+    } else {
+
+      let out;
+
+      if (req.files.imagen[1] == undefined) {
+        console.log('1 foto')
+        const imagen = req.files.imagen;
+        const uploadPath = path.join('src/uploads/', imagen.name);
+        const nombre_imagen = imagen.name;
+        imagen.mv(uploadPath, (err) => {
+          if (err) {
+            throw new Error("Error subiendo imagen " + err)
+          }
+          console.log('File uploaded to ' + uploadPath);
+        })
+        const imagenSubida = await pool.query('SELECT * FROM f_insert_foto_perfil_mascota($1,$2,$3,$4)', [uploadPath, nombre_imagen, id_mascotas, 1]);
+      } else {
+        for (let i = 0; i < Object.keys(req.files.imagen).length; i++) {
+          if ((i + 1) <= 5) {
+            console.log(i + 1)
+            const imagen = req.files.imagen[i];
+            const uploadPath = path.join('src/uploads/', imagen.name);
+
+            const nombre_imagen = imagen.name;
+
+            const imagenSubida = await pool.query('SELECT * FROM f_insert_foto_perfil_mascota($1,$2,$3,$4)', [uploadPath, nombre_imagen, id_mascotas, (i + 1)]);
+            imagen.mv(uploadPath, (err) => {
+              if (err) {
+                throw new Error("Error subiendo imagen " + err)
+              }
+              console.log('File uploaded to ' + uploadPath);
+
+            })
+
+            out += imagenSubida;
+
+          } else {
+
+            return 'limite de fotos alcanzado';
+            
+          }
+        }
+      }
+
+      return out;
+
+    }
+
+  } catch (error) {
+    throw new Error(`Error en subirFotoPerfilMascota ${error}`);
+  }
+
+}
+
 module.exports = {
   readT_mascotas,
   readT_c_mascotas,
@@ -454,5 +515,6 @@ module.exports = {
   readT_generomascota,
   readT_coloresmascotas,
   readT_tamaniomascotas,
-  readT_colores_tipomascota
+  readT_colores_tipomascota,
+  subirFotoPerfilMascota
 };
