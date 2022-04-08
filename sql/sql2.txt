@@ -65,3 +65,15 @@ $$
 select * from t_fotos_perfil_mascotas where id_mascotas = p_id_mascotas limit 1;
 $$
 language 'sql';
+
+CREATE OR REPLACE FUNCTION f_insert_foto_perfil_mascota(
+	p_ruta_guardado TEXT,
+	p_nombre_imagen TEXT,
+	p_id_mascotas NUMERIC,
+	p_consecutivo NUMERIC
+) RETURNS SETOF t_fotos_perfil_mascotas AS
+$$
+	INSERT INTO t_fotos_perfil_mascotas(ruta_guardado, nombre_imagen, id_mascotas, consecutivo)
+	VALUES(p_ruta_guardado, p_nombre_imagen, p_id_mascotas, p_consecutivo) RETURNING*;
+$$
+language 'sql';
