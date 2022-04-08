@@ -36,3 +36,32 @@ create table seguido_seguidores(
 
 );
 
+ create or replace function f_publicaciones_seguidos(p_seguidor_id integer) returns setof v_publicaciones_seguidor as
+ $$
+ SELECT p.id_publicacion,
+    m.nombre_mascota,
+    m.nivel_mascota,
+    p.id_mascotas,
+    p.fecha_publicacion,
+    p.descripcion_publicacion,
+    p.likes_publicacion,
+    c.id_clientes,
+    c.primer_nombre,
+    c.primer_apellido,
+    c.codigo_ubicacion_geografica_ciudad,
+	case (select count(*) from t_seguidores where id_clientes=c.id_clientes and id_seguidor=p_seguidor_id) 
+	when 1 then true
+	else false
+	end as seguido
+   FROM t_publicaciones p
+     JOIN t_clientes c ON p.id_clientes::numeric = c.id_clientes
+     JOIN t_mascotas m ON m.id_mascotas = p.id_mascotas::numeric;
+$$
+language 'sql';
+
+
+create function f_foto_perfil_mascota(p_id_mascotas integer) returns setof t_fotos_perfil_mascotas as
+$$
+select * from t_fotos_perfil_mascotas where id_mascotas = p_id_mascotas limit 1;
+$$
+language 'sql';

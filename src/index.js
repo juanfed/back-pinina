@@ -84,8 +84,8 @@ app.use(express.static('src/uploads'));
 const port = process.env.PORT || 4001;
 
 const publicPath = path.resolve(__dirname, './uploads/uploads2');
-console.log(publicPath)
 app.use(express.static(publicPath));
+
 
 
 // Listen

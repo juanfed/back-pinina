@@ -14,8 +14,11 @@ const readT_publicaciones = async(req) => {
 
             let respuesta2 = await pool.query(`select * from f_fotos_publicacion_id(${id_publicacion})`);
             let respuesta3 = await pool.query(`SELECT * FROM f_comentarios_publicacion(${id_publicacion})`);
+            let respuesta4 = await pool.query(`SELECT * FROM f_foto_perfil_mascota(${respuesta.rows[i].id_mascotas})`)
+           
             respuesta.rows[i].fotos = respuesta2.rows;
             respuesta.rows[i].comentarios = respuesta3.rows;
+            respuesta.rows[i].foto_perfil_mascota = respuesta4.rows;
         }
       
       
