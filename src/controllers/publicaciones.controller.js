@@ -1,11 +1,11 @@
 const pool = require('../../database/dbConection');
 
-const readT_publicaciones = async() => {
+const readT_publicaciones = async(req) => {
 
     try {
         
 
-        let respuesta = await pool.query(`SELECT * FROM v_t_publicaciones`);
+        let respuesta = await pool.query(`SELECT * FROM f_publicaciones_seguidos(${req.params.id_clientes})`);
         
 
 

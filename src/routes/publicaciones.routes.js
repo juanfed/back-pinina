@@ -3,12 +3,12 @@ const validarCampos = require("../utils/validateFields");
 const respuestaT_publicaciones = require('../controllers/publicaciones.controller');
 const respuestaT_fotos_publicaciones = require('../controllers/publicacionesFotos.controller');
 
-router.get('/mostrarpublicaciones', async(req, res) => {
+router.get('/mostrarpublicaciones/:id_clientes', async(req, res) => {
 
     try {
 
-        const readT_publicaciones = await respuestaT_publicaciones.readT_publicaciones();
-     
+        const readT_publicaciones = await respuestaT_publicaciones.readT_publicaciones(req);
+        
         if (!readT_publicaciones) {
             return res.status(400).json({
                 code: -1,

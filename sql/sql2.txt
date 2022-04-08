@@ -23,3 +23,16 @@ return query update t_publicaciones set likes_publicacion = likes where id_publi
 end
 $$
 language 'plpgsql';
+
+
+drop table seguido_seguidores
+create table seguido_seguidores(
+	id_clientes integer not null,
+	id_seguidor integer not null check (id_clientes<>id_seguidor) ,
+	
+	constraint seguido_seguidor_pk primary key(id_clientes, id_seguidor),
+	constraint seguido_seguidores_id_clientes_fk foreign key(id_clientes) references t_clientes(id_clientes),
+	constraint seguido_seguidores_id_seguidor_fk foreign key(id_seguidor) references t_clientes(id_clientes)
+
+);
+
