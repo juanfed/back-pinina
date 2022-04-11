@@ -282,11 +282,11 @@ router.get('/darlike/:id_publicacion/:id_clientes', async(req, res) => {
 
 });
 
-router.post('/seguircuentausuario', async(req, res) => {
+router.post('/seguircuentausuario/:id_usuario/:id_clientes', async(req, res) => {
 
     try {
 
-        const  { id_usuario, id_clientes}  = req.body;
+        const  { id_usuario, id_clientes}  = req.params;
 
         const campos = [
             {

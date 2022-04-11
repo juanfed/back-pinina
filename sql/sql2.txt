@@ -100,3 +100,30 @@ $$
 INSERT INTO t_likes_publicacion(id_clientes, id_publicacion) VALUES(p_id_clientes, p_id_publicacion) RETURNING *;
 $$
 language 'sql';
+
+CREATE OR REPLACE FUNCTION f_no_like_publicacion(p_id_publicacion	integer									
+													) RETURNS setof t_publicaciones AS
+$$
+declare
+likes integer;
+begin
+select likes_publicacion into likes from t_publicaciones where id_publicacion=p_id_publicacion;
+likes := likes -1;
+return query update t_publicaciones set likes_publicacion = likes where id_publicacion=p_id_publicacion returning *;
+end
+$$
+language 'plpgsql';
+
+
+CREATE OR REPLACE FUNCTION f_borrar_likes_publicacion(p_id_clientes integer, p_id_publicacion integer) RETURNS SETOF t_likes_publicacion AS
+$$
+delete from t_likes_publicacion where id_clientes=p_id_clientes and id_publicacion=p_id_publicacion RETURNING *;
+$$
+language 'sql';
+
+CREATE OR REPLACE FUNCTION f_no_seguir(p_id_clientes integer, p_id_seguidor integer) RETURNS SETOF t_seguidores AS
+$$
+delete from t_seguidores where id_clientes=p_id_clientes and id_seguidor=p_id_seguidor RETURNING *;
+$$
+language 'sql';
+

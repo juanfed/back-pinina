@@ -194,9 +194,21 @@ const seguirCuentaUsuario = async (req) => {
 
     try {
 
-        const { id_usuario, id_clientes } = req.body;
+        const { id_usuario, id_clientes } = req.params;
+        if (id_clientes == id_usuario) {
+            throw new Error("No se puede seguir");
+        }
         //se llama a la funcion donde el segundo parametro es el seguidor y el primero la cuenta que sigue
-        let respuesta = await pool.query(`select * from f_seguir($1,$2)`, [id_clientes, id_usuario]);
+        let respuesta;
+        let sigue = await pool.query(`select * from f_sigue(${id_clientes}, ${id_usuario})`);
+        if (JSON.stringify(sigue.rows) === '[]') {
+            respuesta = await pool.query(`select * from f_seguir($1,$2)`, [id_clientes, id_usuario]);
+            respuesta.rows[0].sigue = true;
+        } else {
+            respuesta = await pool.query(`Select * from f_no_seguir(${id_clientes}, ${id_usuario})`);
+            respuesta.rows[0].sigue = false;
+        }
+
 
         if (JSON.stringify(respuesta.rows) === '[]') {
             respuesta = null;
@@ -208,7 +220,7 @@ const seguirCuentaUsuario = async (req) => {
 
     } catch (error) {
         console.log(error);
-        throw new Error(`Error al buscar Id publicación ${error}`);
+        throw new Error(`Error al seguir cuenta ${error}`);
     }
 
 }
