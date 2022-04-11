@@ -164,11 +164,57 @@ const darLikePublicacion = async(id) => {
 
 }
 
+const buscarIdCliente = async(id) => {
+
+    try {
+
+        let respuesta = await pool.query(`SELECT * FROM t_clientes WHERE id_clientes = $1`,[id]);
+
+        if (JSON.stringify(respuesta.rows) === '[]') {
+            respuesta = null;
+        } else {
+            respuesta = respuesta.rows[0];
+        }
+
+        return respuesta;
+        
+    } catch (error) {
+        console.log(error);
+        throw new Error(`Error al buscar Id publicación ${error}`);
+    }
+
+}
+
+const seguirCuentaUsuario = async(req) => {
+
+    try {
+        
+        const  { id_usuario, id_clientes}  = req.body;
+
+        let respuesta = await pool.query(`INSERT INTO t_seguidores(id_clientes, id_seguidor) VALUES($1, $2) RETURNING*`,[id_usuario, id_clientes]);
+
+        if (JSON.stringify(respuesta.rows) === '[]') {
+            respuesta = null;
+        } else {
+            respuesta = respuesta.rows[0];
+        }
+
+        return respuesta;
+        
+    } catch (error) {
+        console.log(error);
+        throw new Error(`Error al buscar Id publicación ${error}`);
+    }
+
+}
+
 module.exports = {
     readT_publicaciones,
     crearPublicacion,
     buscarIdPublicacion,
     actualizarPublicacion,
     eliminarPublicacion,
-    darLikePublicacion
+    darLikePublicacion,
+    buscarIdCliente,
+    seguirCuentaUsuario
 };

@@ -278,4 +278,66 @@ router.get('/darlike/:id_publicacion', async(req, res) => {
 
 });
 
+router.post('/seguircuentausuario', async(req, res) => {
+
+    try {
+
+        const  { id_usuario, id_clientes}  = req.body;
+
+        const campos = [
+            {
+                nombre: 'id_usuario',
+                campo: id_usuario
+            },
+            {
+                nombre: 'id_clientes',
+                campo: id_clientes
+            }
+        ];
+
+        const camposVacios = validarCampos(campos);
+
+        if (camposVacios) {
+            return res.status(400).json({
+                code: -1,
+                msg: `No ha ingresado el campo ${camposVacios.nombre}`,
+            });
+        }
+
+        const clienteExiste = await respuestaT_publicaciones.buscarIdCliente(id_clientes);
+
+        if (!clienteExiste) {
+            return res.status(400).json({
+                code: -1,
+                msg: `El cliente con id: ${id_clientes} no existe!`,
+            });
+        }
+
+        const usuarioSeguido = await respuestaT_publicaciones.seguirCuentaUsuario(req);
+
+        if (!usuarioSeguido) {
+            return res.status(400).json({
+                code: -1,
+                msg: `No se pudo seguir al usuario!`
+            });
+        } else {
+            return res.status(200).json({
+                code: 1,
+                msg: `Usuario siguiendo!`,
+                usuarioSeguido
+            });
+        }
+        
+    } catch (error) {
+        
+        console.log(error);
+        return res.status(500).json({
+            code: -1,
+            error: `Error al seguir al usuario ${error}`
+        });
+
+    }
+
+});
+
 module.exports = router;
