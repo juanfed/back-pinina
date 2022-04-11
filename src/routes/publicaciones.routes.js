@@ -6,7 +6,7 @@ const respuestaT_fotos_publicaciones = require('../controllers/publicacionesFoto
 router.get('/mostrarpublicaciones/:id_clientes', async(req, res) => {
 
     try {
-
+        //se muestran ñlas publicaciones, se le manda como parametro el id_cliente para determinar a quien sigue
         const readT_publicaciones = await respuestaT_publicaciones.readT_publicaciones(req);
         
         if (!readT_publicaciones) {
@@ -220,16 +220,20 @@ router.delete('/eliminarpublicaciones', async(req, res) => {
 
 });
 
-router.get('/darlike/:id_publicacion', async(req, res) => {
+router.get('/darlike/:id_publicacion/:id_clientes', async(req, res) => {
 
     try {
 
         const  id_publicacion  = req.params.id_publicacion;
-
+        const  id_clientes  = req.params.id_clientes;
         const campos = [
             {
                 nombre: 'id_publicacion',
                 campo: id_publicacion
+            },
+            {
+                nombre: 'id_clientes',
+                campo: id_clientes
             }
         ];
 
@@ -251,12 +255,12 @@ router.get('/darlike/:id_publicacion', async(req, res) => {
             });
         }
 
-        const likePublicacion = await respuestaT_publicaciones.darLikePublicacion(id_publicacion);
+        const likePublicacion = await respuestaT_publicaciones.darLikePublicacion(id_publicacion, id_clientes);
 
         if (!likePublicacion) {
             return res.status(400).json({
                 code: -1,
-                msg: `No se pudo eliminar la publicación!`
+                msg: `No se pudo dar like a la publicación!`
             });
         } else {
             return res.status(200).json({

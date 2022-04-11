@@ -84,3 +84,13 @@ $$
 INSERT INTO t_seguidores(id_clientes, id_seguidor) VALUES(p_id_clientes, p_id_seguidor) RETURNING *;
 $$
 language 'sql';
+
+
+create table t_likes_publicacion(
+	id_clientes integer not null,
+	id_publicacion integer not null,
+	constraint id_clientes_likes_fk foreign key(id_clientes) references t_clientes(id_clientes),
+	constraint id_publicacion_likes_fk foreign key(id_publicacion) references t_publicaciones(id_publicacion),
+	constraint clientes_likes_pk primary key(id_clientes, id_publicacion)
+	
+) 

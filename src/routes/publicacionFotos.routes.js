@@ -4,7 +4,7 @@ const respuestaT_fotos = require('../controllers/publicacionesFotos.controller')
 router.get('/mostrarfotos/:id_publicacion', async(req, res) => {
 
     try {
-       
+       //muestra las fotos vinculadas a una publicacion
         if(!req.params.id_publicacion){
             return res.status(400).json({
                 code: -1,

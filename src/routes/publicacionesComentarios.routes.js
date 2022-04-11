@@ -4,7 +4,7 @@ const respuestaT_comentarios = require('../controllers/publicacionesComentarios.
 const respuestaT_publicaciones = require('../controllers/publicaciones.controller');
 
 router.get('/mostrarcomentarios', async(req, res) => {
-
+    
     try {
         if(!req.body.id_publicacion){
             return res.status(400).json({
