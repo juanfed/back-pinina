@@ -105,7 +105,7 @@ const actualizarComentario = async(req) => {
     }
 
 }
-/*
+
 const eliminarComentario = async(id) => {
 
     try {
@@ -120,7 +120,7 @@ const eliminarComentario = async(id) => {
     }
 
 }
-*/
+
 module.exports = {
     crearComentario,
     mostraComentarios,
