@@ -146,19 +146,20 @@ const eliminarPublicacion = async (id) => {
 const darLikePublicacion = async (id_publicacion, id_clientes) => {
 
     try {
-
-        let respuesta2 = await pool.query(`Select * from f_likes_publicacion(${id_clientes},${id_publicacion})`)
-        if (!respuesta2.rows[0]) {
-            return null;
+        try {
+            let respuesta2 = await pool.query(`Select * from f_likes_publicacion(${id_clientes},${id_publicacion})`)
+        } catch (Err) {
+            let respuesta = await pool.query(`SELECT * FROM f_no_like_publicacion($1)`, [id_publicacion]);
+            let respuesta3 = await pool.query(`SELECT * FROM f_borrar_likes_publicacion(${id_clientes},${id_publicacion})`)
+            return respuesta.rows;
         }
         let respuesta = await pool.query(`SELECT * FROM f_like_publicacion($1)`, [id_publicacion]);
 
         if (JSON.stringify(respuesta.rows) === '[]') {
             respuesta = null;
         } else {
-            respuesta = respuesta.rows[0].likes_publicacion;
+            respuesta = respuesta.rows[0];
         }
-
         return respuesta;
 
     } catch (error) {

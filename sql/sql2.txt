@@ -94,3 +94,9 @@ create table t_likes_publicacion(
 	constraint clientes_likes_pk primary key(id_clientes, id_publicacion)
 	
 ) 
+
+CREATE OR REPLACE FUNCTION f_likes_publicacion(p_id_clientes integer, p_id_publicacion integer) RETURNS SETOF t_likes_publicacion AS
+$$
+INSERT INTO t_likes_publicacion(id_clientes, id_publicacion) VALUES(p_id_clientes, p_id_publicacion) RETURNING *;
+$$
+language 'sql';
