@@ -77,3 +77,10 @@ $$
 	VALUES(p_ruta_guardado, p_nombre_imagen, p_id_mascotas, p_consecutivo) RETURNING*;
 $$
 language 'sql';
+
+
+CREATE OR REPLACE FUNCTION f_seguir(p_id_clientes integer, p_id_seguidor integer) RETURNS SETOF t_seguidores AS
+$$
+INSERT INTO t_seguidores(id_clientes, id_seguidor) VALUES(p_id_clientes, p_id_seguidor) RETURNING *;
+$$
+language 'sql';

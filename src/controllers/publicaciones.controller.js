@@ -190,8 +190,8 @@ const seguirCuentaUsuario = async(req) => {
     try {
         
         const  { id_usuario, id_clientes}  = req.body;
-
-        let respuesta = await pool.query(`INSERT INTO t_seguidores(id_clientes, id_seguidor) VALUES($1, $2) RETURNING*`,[id_usuario, id_clientes]);
+        //se llama a la funcion donde el segundo parametro es el seguidor y el primero la cuenta que sigue
+        let respuesta = await pool.query(`select * from f_seguir($1,$2)`,[id_clientes, id_usuario]);
 
         if (JSON.stringify(respuesta.rows) === '[]') {
             respuesta = null;
