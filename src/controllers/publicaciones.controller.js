@@ -131,8 +131,12 @@ const actualizarPublicacion = async (req) => {
 const eliminarPublicacion = async (id) => {
 
     try {
-
+        
         let respuesta = await pool.query(`DELETE FROM t_publicaciones WHERE id_publicacion = $1 RETURNING *`, [id]);
+
+        let respuesta2 = await pool.query(`DELETE FROM t_comentarios_publicaciones WHERE id_publicacion = $1 RETURNING *`, [id]);
+
+        respuesta.rows.comentarios[0] = respuesta2;
 
         return respuesta.rows[0];
 

@@ -164,11 +164,11 @@ router.post('/crearpublicaciones', async(req, res) => {
 
 });*/
 
-router.delete('/eliminarpublicaciones', async(req, res) => {
+router.delete('/eliminarpublicaciones/:id_publicacion', async(req, res) => {
 
     try {
 
-        const { id_publicacion } = req.body;
+        const { id_publicacion } = req.params;
 
         const campos = [
             {

@@ -72,6 +72,7 @@ app.use('/', require('./routes/modals/masoaNMb.modal.routes.js'));
 app.use('/', require('./routes/testimg.routes'));
 app.use('/', require('./routes/publicacionesComentarios.routes'));
 app.use('/', require('./routes/publicacionFotos.routes'));
+app.use('/', require('./routes/loginClientes.routes'));
 
 //REPLACE
 
