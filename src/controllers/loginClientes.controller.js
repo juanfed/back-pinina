@@ -7,7 +7,7 @@ const readT_clientesLogin = async (req) => {
 
         const { correo, password } = req.body;
 
-        let respuesta = await pool.query(`SELECT * FROM t_clientes WHERE correo = $1`, [correo]);
+        let respuesta = await pool.query(`SELECT * FROM f_cliente_correo($1)`, [correo]);
 
         if (JSON.stringify(respuesta.rows) === '[]') {
             respuesta = null;
