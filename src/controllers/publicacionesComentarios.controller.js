@@ -110,7 +110,7 @@ const eliminarComentario = async(id) => {
 
     try {
 
-        let respuesta = await pool.query(`DELETE FROM t_comentarios_publicaciones WHERE comentario_id = $1 RETURNING *`,[id]);
+        let respuesta = await pool.query(`SELECT * FROM f_delete_comentario_publicacion($1)`,[id]);
 
         return respuesta.rows[0];
         
@@ -125,6 +125,6 @@ module.exports = {
     crearComentario,
     mostraComentarios,
     comentarioIdExiste,
-    actualizarComentario
-    //eliminarComentario
+    //actualizarComentario
+    eliminarComentario
 };

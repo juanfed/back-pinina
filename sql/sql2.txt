@@ -127,3 +127,11 @@ delete from t_seguidores where id_clientes=p_id_clientes and id_seguidor=p_id_se
 $$
 language 'sql';
 
+CREATE OR REPLACE FUNCTION f_delete_comentario_publicacion(
+	p_comentario_id integer
+) RETURNS SETOF t_comentarios_publicaciones AS
+$$
+	DELETE FROM t_comentarios_publicaciones WHERE comentario_id = p_comentario_id RETURNING *;
+$$
+language 'sql';
+
