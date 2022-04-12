@@ -151,21 +151,15 @@ router.post('/crearcliente', async (req, res) => {
   try {
     //Se toman solo los campos necesarios que vienen en el body de la petición
     let {
-      tipo_identificacion,
-      identificacion,
+
       primer_nombre,
       segundo_nombre,
       primer_apellido,
       segundo_apellido,
-      direccion,
-      telefono,
       correo,
-      codigo_ubicacion_geografica_pais,
-      codigo_ubicacion_geografica_departamento,
-      codigo_ubicacion_geografica_ciudad,
-      codigo_ubicacion_geografica_localidad,
-      estado,
-      id_usuario,
+      contraseña,
+      codigo_ubicacion_geografica_pais
+
     } = req.body;
     /**Se guardan todos los campos recibidos en el body
      * de la petición dentro de un array
@@ -173,36 +167,12 @@ router.post('/crearcliente', async (req, res) => {
 
     const campos = [
       {
-        nombre: 'tipo_identificacion',
-        campo: tipo_identificacion,
-      },
-      {
-        nombre: 'identificacion',
-        campo: identificacion,
-      },
-      {
         nombre: 'primer_nombre',
         campo: primer_nombre,
       },
       {
-        nombre: 'segundo_nombre',
-        campo: segundo_nombre,
-      },
-      {
         nombre: 'primer_apellido',
         campo: primer_apellido,
-      },
-      {
-        nombre: 'segundo_apellido',
-        campo: segundo_apellido,
-      },
-      {
-        nombre: 'direccion',
-        campo: direccion,
-      },
-      {
-        nombre: 'telefono',
-        campo: telefono,
       },
       {
         nombre: 'correo',
@@ -213,24 +183,8 @@ router.post('/crearcliente', async (req, res) => {
         campo: codigo_ubicacion_geografica_pais,
       },
       {
-        nombre: 'codigo_ubicacion_geografica_departamento',
-        campo: codigo_ubicacion_geografica_departamento,
-      },
-      {
-        nombre: 'codigo_ubicacion_geografica_ciudad',
-        campo: codigo_ubicacion_geografica_ciudad,
-      },
-      {
-        nombre: 'codigo_ubicacion_geografica_localidad',
-        campo: codigo_ubicacion_geografica_localidad,
-      },
-      {
-        nombre: 'estado',
-        campo: estado,
-      },
-      {
-        nombre: 'id_usuario',
-        campo: id_usuario,
+        nombre: 'contraseña',
+        campo: contraseña,
       },
     ];
 
@@ -241,24 +195,14 @@ router.post('/crearcliente', async (req, res) => {
         code: -2,
         msg: `No ha ingresado el campo ${campoVacio.nombre}`,
       });
-
-    const searchT_clientes = await respuestaT_clientes.searchT_clientes(
-      id_usuario,
-      identificacion
-    );
-
-    if (searchT_clientes) {
-      res.status(400).json({
-        code: -2,
-        msg: `El cliente ingresado ya se encuentra registrado`,
-      });
-    } else {
+    const cliente = await respuestaT_clientes.searchT_clienteCorreo(correo);
+    if (!cliente) {
       const createT_clientes = await respuestaT_clientes.createT_clientes(req);
 
       if (!createT_clientes) {
         res.status(400).json({
           code: -1,
-          msg: `Ocurrió un error al insertar los datos del cliente`,
+          msg: `Ocurrió un error al registrar el cliente cliente`,
         });
       } else {
         res.status(200).json({
@@ -266,7 +210,16 @@ router.post('/crearcliente', async (req, res) => {
           user: createT_clientes[0],
         });
       }
+    } else {
+      res.status(400).json({
+        code: -2,
+        msg: `El cliente ingresado ya se encuentra registrado`,
+      })
     }
+
+
+
+
   } catch (err) {
     console.log(err);
     res.status(400).json({

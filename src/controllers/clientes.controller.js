@@ -1,5 +1,5 @@
 const pool = require('../../database/dbConection');
-
+const { encryptPassword } = require("../utils/encryptPassword");  
 const readT_clientes = async (req) => {
   try {
     const { id_usuario } = req.body;
@@ -195,63 +195,39 @@ const searchT_clientes = async (id_usuario, param_busqueda) => {
 
 const createT_clientes = async (req) => {
   try {
-    const {
-      tipo_identificacion,
-      identificacion,
+    let {
+
       primer_nombre,
       segundo_nombre,
       primer_apellido,
       segundo_apellido,
-      direccion,
-      telefono,
       correo,
-      codigo_ubicacion_geografica_pais,
-      codigo_ubicacion_geografica_departamento,
-      codigo_ubicacion_geografica_ciudad,
-      codigo_ubicacion_geografica_localidad,
-      estado,
-      id_usuario,
-    } = req.body;
+      contraseña,
+      codigo_ubicacion_geografica_pais
 
-    let respuesta = await pool.query(
-      `SELECT * FROM f_createclientes($1::character varying,
-                            $2::character varying, $3::character varying, $4::character varying, $5::character varying,
-                            $6::character varying, $7::character varying, $8::character varying,
-                            $9::character varying, $10::numeric, $11::numeric, $12::numeric, $13::numeric,
-                            $14::numeric, $15::numeric)`,
-      [
-        tipo_identificacion,
-        identificacion,
-        primer_nombre,
-        segundo_nombre,
-        primer_apellido,
-        segundo_apellido,
-        direccion,
-        telefono,
-        correo,
-        codigo_ubicacion_geografica_pais,
-        codigo_ubicacion_geografica_departamento,
-        codigo_ubicacion_geografica_ciudad,
-        codigo_ubicacion_geografica_localidad,
-        estado,
-        id_usuario,
-      ]
-    );
+    } = req.body;
+    
+
+
+
+
+    contraseña = await encryptPassword(contraseña);
+   
+    let query = `SELECT * FROM f_create_cliente_registro(\'${primer_nombre}\',\'${segundo_nombre}\',\'${primer_apellido}\',\'${segundo_apellido}\',\'${correo}\',${codigo_ubicacion_geografica_pais},\'${contraseña}\')`;
+    let respuesta = await pool.query(query);
 
     /**Para verificar que se retorne la fila con los datos actualizados
      * se convierte la respuesta en un JSONArray y se compara con []
      */
     if (JSON.stringify(respuesta.rows) === '[]') {
       //Se le asigna null a la respuesta
-      respuesta = null;
+      return null;
     } else {
-      respuesta = respuesta.rows;
+      return respuesta.rows;
     }
-
-    return respuesta;
   } catch (err) {
     console.log(err);
-    throw new Error(`clientes.controller.js->createT_clientes()\n${err}`);
+    throw new Error(`Error en createT_clientes()\n${err}`);
   }
 };
 
@@ -276,7 +252,20 @@ const searcht_clientesId = async (id_clientes) => {
     throw new Error(`clientes.controller.js->searchT_clienteId()\n${error}`);
   }
 };
-
+const searchT_clienteCorreo = async (correo) => {
+  try {
+  
+    let cliente = await pool.query(`select * from f_cliente_correo(\'${correo}\')`);
+    if (JSON.stringify(cliente.rows) === '[]') {
+      //Se le asigna null a la respuesta
+      return null
+    } else {
+      return cliente.rows;
+    }
+  } catch (error) {
+    throw new Error(`Error en searchT_clienteCorreo()\n${error}`);
+  }
+}
 const deleteT_clientes = async (req) => {
   try {
     const { identificacion } = req.body;
@@ -357,6 +346,7 @@ const getT_mascotaIdporIdclienteYIdusuario = async (
 };
 
 module.exports = {
+  searchT_clienteCorreo,
   readT_clientes,
   updateT_clientes,
   readallt_clientes,
