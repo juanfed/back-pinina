@@ -94,7 +94,8 @@ router.post('/crearpublicaciones', async(req, res) => {
 
 });
 
-router.put('/actualizarpublicaciones', async(req, res) => {
+//descomentar si se necesita
+/*router.put('/actualizarpublicaciones', async(req, res) => {
 
     try {
 
@@ -161,7 +162,7 @@ router.put('/actualizarpublicaciones', async(req, res) => {
 
     }
 
-});
+});*/
 
 router.delete('/eliminarpublicaciones', async(req, res) => {
 
@@ -224,8 +225,8 @@ router.get('/darlike/:id_publicacion/:id_clientes', async(req, res) => {
 
     try {
 
-        const  id_publicacion  = req.params.id_publicacion;
-        const  id_clientes  = req.params.id_clientes;
+        const { id_publicacion, id_clientes } = req.params;
+        
         const campos = [
             {
                 nombre: 'id_publicacion',

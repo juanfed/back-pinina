@@ -104,7 +104,8 @@ router.post('/crearcomentarios', async(req, res) => {
 
 });
 
-router.put('/actualizarcomentarios', async(req, res) => {
+//descomentar si se necesita
+/*router.put('/actualizarcomentarios', async(req, res) => {
 
     try {
 
@@ -180,13 +181,13 @@ router.put('/actualizarcomentarios', async(req, res) => {
 
     }
 
-});
+});*/
 
-router.delete('/eliminarcomentario', async(req, res) => {
+router.delete('/eliminarcomentario/:comentario_id/:id_publicacion', async(req, res) => {
 
     try {
 
-        const { comentario_id, id_publicacion } = req.body;
+        const { comentario_id, id_publicacion } = req.params;
 
         const campos = [
             {
