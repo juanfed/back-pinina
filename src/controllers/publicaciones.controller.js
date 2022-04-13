@@ -47,7 +47,7 @@ const crearPublicacion = async (req) => {
 
         const date = new Date;
 
-        const fecha_publicacion = Intl.DateTimeFormat('es-MX').format(date);
+        const fecha_publicacion = Intl.DateTimeFormat('en-US').format(date);
 
         let respuesta = await pool.query(`SELECT * FROM f_insert_publicacion($1, $2, $3, $4)`,
             [
@@ -102,7 +102,7 @@ const actualizarPublicacion = async (req) => {
 
         const date = new Date;
 
-        const fecha_publicacion = Intl.DateTimeFormat('es-MX').format(date);
+        const fecha_publicacion = Intl.DateTimeFormat('en-US').format(date);
 
         let respuesta = await pool.query(`SELECT * FROM f_update_publicacion($1, $2, $3, $4, 5$)`,
             [
