@@ -1,4 +1,5 @@
 const pool = require('../../database/dbConection');
+const fs = require('fs');
 
 const readT_publicaciones = async (req) => {
 
@@ -132,13 +133,21 @@ const eliminarPublicacion = async (id) => {
 
     try {
         
-        let respuesta = await pool.query(`DELETE FROM t_publicaciones WHERE id_publicacion = $1 RETURNING *`, [id]);
+        let respuesta = await pool.query(`SELECT * FROM f_eliminar_comentarios_likes_fotos($1)`, [id]);
 
-        let respuesta2 = await pool.query(`DELETE FROM t_comentarios_publicaciones WHERE id_publicacion = $1 RETURNING *`, [id]);
+        for (let i = 0; i < respuesta.rows.length; i++) {
+            fs.unlinkSync(`src/uploads/uploads2/${respuesta.rows[i].nombre_imagen}`);
+        }
 
-        respuesta.rows.comentarios[0] = respuesta2;
+        respuesta = await pool.query(`SELECT * FROM f_eliminar_publicacion($1)`, [id]);
 
-        return respuesta.rows[0];
+        if (JSON.stringify(respuesta.rows) === '[]') {
+            respuesta = null;
+        } else {
+            respuesta = respuesta.rows[0];
+        }
+
+        return respuesta;
 
     } catch (error) {
         console.log(error);

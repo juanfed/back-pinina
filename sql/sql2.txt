@@ -168,3 +168,23 @@ DECLARE
 
 $$
 language 'plpgsql';
+
+CREATE OR REPLACE FUNCTION f_eliminar_comentarios_likes_fotos(
+	p_id_publicacion INTEGER
+) RETURNS SETOF t_fotos_publicaciones AS
+$$
+	DELETE FROM t_comentarios_publicaciones WHERE id_publicacion =  p_id_publicacion;
+	
+	DELETE FROM t_likes_publicacion WHERE id_publicacion = p_id_publicacion;
+	
+	DELETE FROM t_fotos_publicaciones WHERE id_publicacion = p_id_publicacion RETURNING *;
+$$
+language 'sql';
+
+CREATE OR REPLACE FUNCTION f_eliminar_publicacion(
+	p_id_publicacion INTEGER
+) RETURNS SETOF t_publicaciones AS
+$$
+	DELETE FROM t_publicaciones WHERE id_publicacion = p_id_publicacion RETURNING *;
+$$
+language 'sql';
