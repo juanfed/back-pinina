@@ -186,7 +186,7 @@ const buscarIdCliente = async (id) => {
 
     try {
 
-        let respuesta = await pool.query(`SELECT * FROM t_clientes WHERE id_clientes = $1`, [id]);
+        let respuesta = await pool.query(`SELECT * FROM f_searcht_usuario_id($1)`, [id]);
 
         if (JSON.stringify(respuesta.rows) === '[]') {
             respuesta = null;

@@ -188,3 +188,11 @@ $$
 	DELETE FROM t_publicaciones WHERE id_publicacion = p_id_publicacion RETURNING *;
 $$
 language 'sql';
+
+CREATE OR REPLACE FUNCTION f_searcht_usuario_id(
+	p_id_usuario INTEGER
+) RETURNS SETOF t_usuario AS
+$$
+	SELECT * FROM t_usuario WHERE id_usuario = p_id_usuario;
+$$
+language 'sql';
