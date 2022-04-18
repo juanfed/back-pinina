@@ -152,7 +152,6 @@ router.post('/crearvacuna', async (req, res) => {
       fecha_proxima_vacuna,
       sintomas_vacuna,
       id_mascotas,
-      id_clientes,
       id_usuario,
     } = req.body;
     const campos = [
@@ -173,10 +172,6 @@ router.post('/crearvacuna', async (req, res) => {
         campo: id_mascotas,
       },
       {
-        nombre: 'id_clientes',
-        campo: id_clientes,
-      },
-      {
         nombre: 'id_usuario',
         campo: id_usuario,
       },
@@ -191,12 +186,12 @@ router.post('/crearvacuna', async (req, res) => {
       });
 
     const existe_cliente = await respuestaT_clientes.searcht_clientesId(
-      id_clientes
+      id_usuario
     );
     if (!existe_cliente) {
       return res.status(400).json({
         ok: false,
-        msg: `No existe el cliente con id: ${id_clientes}`,
+        msg: `No existe el cliente con id: ${id_usuario}`,
       });
     }
 
@@ -216,7 +211,6 @@ router.post('/crearvacuna', async (req, res) => {
       fecha_proxima_vacuna,
       sintomas_vacuna,
       id_mascotas,
-      id_clientes,
       id_usuario
     );
     if (!respuesta_readT_vacunas) {
