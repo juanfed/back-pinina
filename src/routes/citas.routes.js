@@ -2,7 +2,7 @@ const router = require("express").Router();
 
 const respuestaT_citas = require('../controllers/citas.controller');
 const respuestaT_usuarios = require('../controllers/clientes.controller');
-const respuestaT_mascotas = require('../controllers/mascotas.contrroller')
+const respuestaT_mascotas = require('../controllers/mascotas.contrroller');
 //===========================================
 //Mostrar citas en t_citas
 //===========================================

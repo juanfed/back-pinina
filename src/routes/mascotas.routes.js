@@ -2,6 +2,7 @@ const router = require('express').Router();
 
 const respuestaT_mascotas = require('../controllers/mascotas.contrroller');
 const respuestaT_clientes = require('../controllers/clientes.controller');
+const respuestaT_usuarios = require('../controllers/clientes.controller');
 
 //===========================================
 //Mostrar mascotas en t_mascotas
@@ -59,7 +60,14 @@ router.post('/CrearMascotas', async (req, res) => {
       id_clientes,
       fecha_nacimiento,
     } = req.body;
-
+    req.body.id_usuario=id_clientes;
+    const propietario_c = await respuestaT_usuarios.readT_clientes(req);
+    if(propietario_c == null){
+        return res.status(400).json({
+            code: -2,
+            message: "No existe el usuario en el sistema."
+        })
+    }
     const campos = [
       {
         nombre: 'nombre_mascota',
