@@ -102,8 +102,8 @@ const update_clienteMascota = async (
 ) => {
   try {
     let respuesta = await pool.query(
-      `SELECT id_clientes,
-      tipo_identificacion,
+      `SELECT id_usuario,
+      id_tipo_identificacion,
       identificacion,
       primer_nombre,
       segundo_nombre,
@@ -237,11 +237,11 @@ const createT_clientes = async (req) => {
   }
 };
 
-const searcht_clientesId = async (id_clientes) => {
+const searcht_clientesId = async (id_usuario) => {
   try {
     let respuesta = await pool.query(
-      `SELECT * FROM f_searchT_clienteId($1::numeric)`,
-      [id_clientes]
+      `SELECT * FROM f_searchT_usuarioId($1::numeric)`,
+      [id_usuario]
     );
     /**Para verificar que se retorne la fila con los datos actualizados
      * se convierte la respuesta en un JSONArray y se compara con []

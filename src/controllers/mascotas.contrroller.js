@@ -104,7 +104,7 @@ const updateT_mascotasperfil = async (
       id_raza,
       id_color,
       genero_mascota,
-      id_clientes,
+      id_usuario,
       fecha_nacimiento from f_updatemascotasperfil($1::numeric,$2::text,$3::numeric,$4::numeric,$5::numeric,$6::numeric,$7::numeric,$8::text)`,
       [
         id_mascotas,
