@@ -36,7 +36,6 @@ const insertarT_hospitalizacion = async (
   fecha_salida_hoz,
   estado_hoz,
   id_mascotas,
-  id_clientes,
   id_usuario
 ) => {
   try {
@@ -50,9 +49,8 @@ const insertarT_hospitalizacion = async (
       fecha_salida_hoz,
       estado_hoz,
       id_mascota,
-      id_cliente,
       id_usuario from f_insertar_hospitalizacion
-                                      ($1::text,$2::text,$3::text,$4::text,$5::numeric, $6::text,$7::text,$8::numeric,$9::numeric,$10::numeric,$11::numeric)`,
+                                      ($1::text,$2::text,$3::text,$4::text,$5::numeric, $6::text,$7::text,$8::numeric,$9::numeric,$10::numeric)`,
       [
         tipo_hozpitalizacion,
         hora_hoz,
@@ -63,8 +61,8 @@ const insertarT_hospitalizacion = async (
         fecha_salida_hoz,
         estado_hoz,
         id_mascotas,
-        id_clientes,
-        id_usuario,
+      
+        id_usuario
       ]
     );
 
