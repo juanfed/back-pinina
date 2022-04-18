@@ -2,12 +2,12 @@ const pool = require('../../database/dbConection');
 
 const readT_desparasitante = async(req) => {
     try {
-        const { id_usuario, id_clientes, id_mascotas } = req.body;
+        const { id_usuario, id_mascotas } = req.body;
 
         let respuesta =
             await pool.query(`SELECT * from f_readdesparasitante
-                                ($1::numeric, $2::numeric, $3::numeric)`, [
-                id_usuario, id_clientes, id_mascotas
+                                ($1::numeric, $2::numeric)`, [
+                id_usuario, id_mascotas
             ]);
         
         /**Para verificar que el resultado de la consulta no arroja ningún registro

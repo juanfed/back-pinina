@@ -14,9 +14,6 @@ router.post("/mostrardesparacitaciones", async(req, res) => {
                 nombre: 'id_usuario',
                 campo: id_usuario
             },{
-                nombre: 'id_clientes',
-                campo: id_clientes
-            },{
                 nombre: 'id_mascotas',
                 campo: id_mascotas
             }
