@@ -97,6 +97,7 @@ const updateT_mascotasperfil = async (
   fecha_nacimiento
 ) => {
   try {
+    
     let respuesta = await pool.query(
       `SELECT id_mascotas,
       nombre_mascota,
@@ -105,7 +106,7 @@ const updateT_mascotasperfil = async (
       id_color,
       genero_mascota,
       id_usuario,
-      fecha_nacimiento from f_updatemascotasperfil($1::numeric,$2::text,$3::numeric,$4::numeric,$5::numeric,$6::numeric,$7::numeric,$8::text)`,
+      fecha_nacimiento from f_updatemascotasperfil($1::numeric,$2::text,$3::numeric,$4::numeric,$5::numeric,$6::numeric,$7::numeric,$8)`,
       [
         id_mascotas,
         nombre_mascota,
@@ -114,7 +115,7 @@ const updateT_mascotasperfil = async (
         id_color,
         genero_mascota,
         id_clientes,
-        fecha_nacimiento,
+        fecha_nacimiento
       ]
     );
 

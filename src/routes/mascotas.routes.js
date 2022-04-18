@@ -60,13 +60,13 @@ router.post('/CrearMascotas', async (req, res) => {
       id_clientes,
       fecha_nacimiento,
     } = req.body;
-    req.body.id_usuario=id_clientes;
+    req.body.id_usuario = id_clientes;
     const propietario_c = await respuestaT_usuarios.readT_clientes(req);
-    if(propietario_c == null){
-        return res.status(400).json({
-            code: -2,
-            message: "No existe el usuario en el sistema."
-        })
+    if (propietario_c == null) {
+      return res.status(400).json({
+        code: -2,
+        message: "No existe el usuario en el sistema."
+      })
     }
     const campos = [
       {
@@ -279,7 +279,6 @@ router.put('/actualizarmascotaperfil', async (req, res) => {
       genero_mascota,
       id_clientes,
       fecha_nacimiento,
-
       identificacion,
       primer_nombre,
       segundo_nombre,
@@ -351,12 +350,14 @@ router.put('/actualizarmascotaperfil', async (req, res) => {
     const existe_cliente = await respuestaT_clientes.searcht_clientesId(
       id_clientes
     );
+
     if (!existe_cliente) {
       return res.status(400).json({
         ok: false,
         msg: `No existe el cliente con id: ${id_clientes}`,
       });
     }
+    
     if (
       !primer_nombre ||
       !segundo_nombre ||
@@ -365,8 +366,10 @@ router.put('/actualizarmascotaperfil', async (req, res) => {
       !direccion ||
       !correo ||
       !telefono ||
-      !identificacion
+      !identificacion ||
+      !fecha_nacimiento
     ) {
+      
       const updateT_mascotaspefil =
         await respuestaT_mascotas.updateT_mascotasperfil(
           id_mascotas,
@@ -457,7 +460,8 @@ router.put('/actualizarmascotaperfil', async (req, res) => {
           id_raza,
           id_color,
           genero_mascota,
-          id_clientes
+          id_clientes,
+          fecha_nacimiento
         );
       if (!updateT_mascotaspefil || !update_clienteMascota) {
         res.status(400).json({
