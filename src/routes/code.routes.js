@@ -406,8 +406,9 @@ router.patch("/update-password", async (req, res) => {
       });
     }
     // Actualizar contraseña de usuario
-    const updatePassword = await responseT_code.update_usu_password(req);
 
+    const updatePassword = await responseT_code.update_usu_password(req);
+   
     if (updatePassword.rest == 2) {
       return res.status(401).json({
         code: updatePassword.rest,
@@ -432,8 +433,11 @@ router.put("/update-user-info", async (req, res) => {
   try {
     const {
       id_usuario,
-      nombres,
-      apellidos,
+      primer_nombre,
+      segundo_nombre,
+      primer_apellido,
+      segundo_apellido,
+      
       telefono,
       ubicacion
     } = req.body;
@@ -444,12 +448,18 @@ router.put("/update-user-info", async (req, res) => {
         campo: id_usuario,
       },
       {
-        nombre: "nombres",
-        campo: nombres,
+        nombre: "primer_nombre",
+        campo: primer_nombre,
       },
       {
-        nombre: "apellidos",
-        campo: apellidos,
+        nombre: "segundo_nombre",
+        campo: segundo_nombre,
+      },{
+        nombre: "primer_apellido",
+        campo: primer_apellido,
+      },{
+        nombre: "segundo_apellido",
+        campo: segundo_apellido,
       },
       /* {
         nombre: "telefono",
@@ -475,12 +485,7 @@ router.put("/update-user-info", async (req, res) => {
       msg: `No ha ingresado el campo ${campoVacio.nombre}`,
       });
 
-    req.body.primer_nombre = nombres.split(' ')[0];
-    req.body.segundo_nombre = nombres.split(' ')[1];
-
-    req.body.primer_apellido = apellidos.split(' ')[0];
-    req.body.segundo_apellido = apellidos.split(' ')[1];
-    
+ 
     // Retorna usuario actualizado si se logró el proceso
     const usuarioActualizado = await responseT_code.update_usu(req);
     
