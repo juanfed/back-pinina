@@ -196,3 +196,31 @@ $$
 	SELECT * FROM t_usuario WHERE id_usuario = p_id_usuario;
 $$
 language 'sql';
+
+CREATE OR REPLACE FUNCTION f_create_usuario_registro(
+	p_tipo_identificacion INTEGER,
+	p_identificacion VARCHAR(100),
+	p_primer_nombre VARCHAR(100),
+	p_segundo_nombre VARCHAR(100),
+	p_primer_apellido VARCHAR(100),
+	p_segundo_apellido VARCHAR(100),
+	p_direccion TEXT,
+	p_telefono VARCHAR(50),
+	p_correo VARCHAR(200),
+	p_contraseña VARCHAR(150),
+	p_codigo_ubicacion_geografica_pais INTEGER,
+	p_codigo_ubicacion_geografica_departamento INTEGER,
+	p_codigo_ubicacion_geografica_ciudad INTEGER,
+	p_codigo_ubicacion_geografica_localidad INTEGER
+)RETURNS SETOF t_usuario AS
+$$
+	INSERT INTO t_usuario(tipo, correo, password, origen_cuenta, estado, id_tipo_identificacion,
+	identificacion, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, telefono,
+	id_nivel_user, direccion, codigo_ubicacion_geografica_departamento,	codigo_ubicacion_geografica_ciudad,
+	codigo_ubicacion_geografica_localidad, codigo_ubicacion_geografica_pais)
+	VALUES('NO', p_correo, p_contraseña, 1, 'S', p_tipo_identificacion, p_identificacion, p_primer_nombre,
+	p_segundo_nombre, p_primer_apellido, p_segundo_apellido, p_telefono,
+	1, p_direccion, p_codigo_ubicacion_geografica_departamento, p_codigo_ubicacion_geografica_ciudad,
+	p_codigo_ubicacion_geografica_localidad, p_codigo_ubicacion_geografica_pais) RETURNING *;
+$$
+LANGUAGE 'sql'

@@ -1,5 +1,6 @@
 const router = require('express').Router();
 
+const validarCampos = require("../utils/validateFields");
 const respuestaT_clientes = require('../controllers/clientes.controller');
 const respuestaT_mascotas = require('../controllers/mascotas.contrroller');
 
@@ -150,52 +151,85 @@ router.put('/actualizarclientes', async (req, res) => {
 router.post('/crearcliente', async (req, res) => {
   try {
     //Se toman solo los campos necesarios que vienen en el body de la petición
-    let {
 
-      primer_nombre,
-      segundo_nombre,
-      primer_apellido,
-      segundo_apellido,
-      correo,
-      contraseña,
-      codigo_ubicacion_geografica_pais
-
+    const { tipo_identificacion, identificacion, primer_nombre, segundo_nombre,
+      primer_apellido, segundo_apellido, direccion, telefono, correo, contraseña, codigo_ubicacion_geografica_pais, codigo_ubicacion_geografica_departamento, codigo_ubicacion_geografica_ciudad, codigo_ubicacion_geografica_localidad 
     } = req.body;
+    
     /**Se guardan todos los campos recibidos en el body
      * de la petición dentro de un array
      */
 
     const campos = [
       {
+        nombre: 'tipo_identificacion',
+        campo: tipo_identificacion
+      },
+      {
+        nombre: 'identificacion',
+        campo: identificacion
+      },
+      {
         nombre: 'primer_nombre',
-        campo: primer_nombre,
+        campo: primer_nombre
+      },
+      {
+        nombre: 'segundo_nombre',
+        campo: segundo_nombre
       },
       {
         nombre: 'primer_apellido',
-        campo: primer_apellido,
+        campo: primer_apellido
+      },
+      {
+        nombre: 'segundo_apellido',
+        campo: segundo_apellido
+      },
+      {
+        nombre: 'direccion',
+        campo: direccion
+      },
+      {
+        nombre: 'telefono',
+        campo: telefono
       },
       {
         nombre: 'correo',
-        campo: correo,
-      },
-      {
-        nombre: 'codigo_ubicacion_geografica_pais',
-        campo: codigo_ubicacion_geografica_pais,
+        campo: correo
       },
       {
         nombre: 'contraseña',
-        campo: contraseña,
+        campo: contraseña
       },
+      {
+        nombre: 'codigo_ubicacion_geografica_pais',
+        campo: codigo_ubicacion_geografica_pais
+      },
+      {
+        nombre: 'codigo_ubicacion_geografica_departamento',
+        campo: codigo_ubicacion_geografica_departamento
+      },
+      {
+        nombre: 'codigo_ubicacion_geografica_ciudad',
+        campo: codigo_ubicacion_geografica_ciudad
+      },
+      {
+        nombre: 'codigo_ubicacion_geografica_localidad',
+        campo: codigo_ubicacion_geografica_localidad
+      }
     ];
 
-    const campoVacio = campos.find((x) => !x.campo);
+    const campoVacio = validarCampos(campos);
 
-    if (campoVacio)
+    if (campoVacio) {
       res.status(400).json({
         code: -2,
         msg: `No ha ingresado el campo ${campoVacio.nombre}`,
       });
+    }
+      
     const cliente = await respuestaT_clientes.searchT_clienteCorreo(correo);
+
     if (!cliente) {
       const createT_clientes = await respuestaT_clientes.createT_clientes(req);
 
@@ -216,9 +250,6 @@ router.post('/crearcliente', async (req, res) => {
         msg: `El cliente ingresado ya se encuentra registrado`,
       })
     }
-
-
-
 
   } catch (err) {
     console.log(err);

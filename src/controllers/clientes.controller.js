@@ -195,26 +195,31 @@ const searchT_clientes = async (id_usuario, param_busqueda) => {
 
 const createT_clientes = async (req) => {
   try {
-    let {
-
-      primer_nombre,
-      segundo_nombre,
-      primer_apellido,
-      segundo_apellido,
-      correo,
-      contraseña,
-      codigo_ubicacion_geografica_pais
-
+    
+    let { tipo_identificacion, identificacion, primer_nombre, segundo_nombre,
+      primer_apellido, segundo_apellido, direccion, telefono, correo, contraseña, codigo_ubicacion_geografica_pais, codigo_ubicacion_geografica_departamento, codigo_ubicacion_geografica_ciudad, codigo_ubicacion_geografica_localidad 
     } = req.body;
     
-
-
-
-
     contraseña = await encryptPassword(contraseña);
-   
-    let query = `SELECT * FROM f_create_cliente_registro(\'${primer_nombre}\',\'${segundo_nombre}\',\'${primer_apellido}\',\'${segundo_apellido}\',\'${correo}\',${codigo_ubicacion_geografica_pais},\'${contraseña}\')`;
-    let respuesta = await pool.query(query);
+
+    let respuesta = await pool.query(`SELECT * FROM f_create_usuario_registro($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`,
+      [
+        tipo_identificacion,
+        identificacion,
+        primer_nombre,
+        segundo_nombre,
+        primer_apellido,
+        segundo_apellido,
+        direccion,
+        telefono,
+        correo,
+        contraseña,
+        codigo_ubicacion_geografica_pais,
+        codigo_ubicacion_geografica_departamento,
+        codigo_ubicacion_geografica_ciudad,
+        codigo_ubicacion_geografica_localidad
+      ]
+    );
 
     /**Para verificar que se retorne la fila con los datos actualizados
      * se convierte la respuesta en un JSONArray y se compara con []
@@ -225,6 +230,7 @@ const createT_clientes = async (req) => {
     } else {
       return respuesta.rows;
     }
+
   } catch (err) {
     console.log(err);
     throw new Error(`Error en createT_clientes()\n${err}`);
@@ -254,14 +260,16 @@ const searcht_clientesId = async (id_clientes) => {
 };
 const searchT_clienteCorreo = async (correo) => {
   try {
-  
-    let cliente = await pool.query(`select * from f_cliente_correo(\'${correo}\')`);
-    if (JSON.stringify(cliente.rows) === '[]') {
+    
+    let respuesta = await pool.query(`SELECT * FROM f_usuario_correo($1)`,[correo]);
+
+    if (JSON.stringify(respuesta.rows) === '[]') {
       //Se le asigna null a la respuesta
       return null
     } else {
-      return cliente.rows;
+      return respuesta.rows[0];
     }
+
   } catch (error) {
     throw new Error(`Error en searchT_clienteCorreo()\n${error}`);
   }
@@ -271,7 +279,7 @@ const deleteT_clientes = async (req) => {
     const { identificacion } = req.body;
 
     let respuesta = await pool.query(
-      `SELECT * from f_deleteclientes
+      `SELECT * from f_delete_usuario
                                 ($1::character varying)`,
       [identificacion]
     );
