@@ -1,12 +1,12 @@
 const pool = require('../../database/dbConection');
 
-const readT_vacunas = async (id_mascotas, id_clientes, id_usuario) => {
+const readT_vacunas = async (req) => {
   try {
-    let respuesta = await pool.query(
-      `SELECT id_tipo_vacunas, fecha_vacuna, dosis, fecha_proxima_vacuna, sintomas_vacuna, id_mascotas, id_clientes, id_usuario from f_readvacunas
-                                  ($1::numeric,$2::numeric,$3::numeric)`,
-      [id_mascotas, id_clientes, id_usuario]
-    );
+
+    const { id_mascotas, id_usuario } = req.body;
+
+    let respuesta = await pool.query(`SELECT * FROM f_readvacunas($1, $2)`,
+    [id_mascotas, id_usuario]);  
 
     /**Para verificar que el resultado de la consulta no arroja ningún registro
      * se convierte la respuesta en un JSONArray y se compara con []
@@ -19,6 +19,7 @@ const readT_vacunas = async (id_mascotas, id_clientes, id_usuario) => {
     }
 
     return respuesta;
+
   } catch (err) {
     console.log(err);
     throw new Error(`vacunas.controller.js->f_readvacunas()\n${err}`);

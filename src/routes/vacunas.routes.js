@@ -1,59 +1,57 @@
 const router = require('express').Router();
 
+const validarcampos = require('../utils/validateFields');
 const respuestaT_clientes = require('../controllers/clientes.controller');
 const respuestaT_mascotas = require('../controllers/mascotas.contrroller');
 const respuestaT_vacunas = require('../controllers/vacunas.controller');
 
 router.post('/mostrarvacunas', async (req, res) => {
   try {
-    const { id_mascotas, id_clientes, id_usuario } = req.body;
+
+    const { id_mascotas, id_usuario } = req.body;
+
     const campos = [
       {
         nombre: 'id_mascotas',
         campo: id_mascotas,
       },
       {
-        nombre: 'id_clientes',
-        campo: id_clientes,
-      },
-      {
         nombre: 'id_usuario',
         campo: id_usuario,
-      },
+      }
     ];
 
-    const campoVacio = campos.find((x) => !x.campo);
+    const campoVacio = validarcampos(campos);
 
-    if (campoVacio)
+    if (campoVacio) {
       res.status(400).json({
         code: -2,
         msg: `No ha ingresado el campo ${campoVacio.nombre}`,
       });
+    }
 
-    const existe_cliente = await respuestaT_clientes.searcht_clientesId(
-      id_clientes
-    );
+    const existe_cliente = await respuestaT_clientes.searcht_clientesId(id_usuario);
+
     if (!existe_cliente) {
       return res.status(400).json({
         ok: false,
-        msg: `No existe el cliente con id: ${id_clientes}`,
+        msg: `No existe el cliente con id: ${id_usuario}`,
       });
     }
 
     const existe_mascota = await respuestaT_mascotas.obtenerMascotaPorId(
       id_mascotas
     );
+
     if (!existe_mascota) {
       return res.status(400).json({
         ok: false,
         msg: `No esta registrada esta mascota con id: ${id_mascotas}`,
       });
     }
-    const respuesta_readT_vacunas = await respuestaT_vacunas.readT_vacunas(
-      id_mascotas,
-      id_clientes,
-      id_usuario
-    );
+
+    const respuesta_readT_vacunas = await respuestaT_vacunas.readT_vacunas(req);
+
     if (!respuesta_readT_vacunas) {
       res.status(400).json({
         code: -1,
@@ -66,6 +64,7 @@ router.post('/mostrarvacunas', async (req, res) => {
         user: respuesta_readT_vacunas,
       });
     }
+
   } catch (err) {
     console.log(err);
     res.status(400).json({
