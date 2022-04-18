@@ -8,7 +8,7 @@ const crearComentario = async(req) => {
 
         const date = new Date;
 
-        const fecha_comentario = Intl.DateTimeFormat('es-MX').format(date);
+        const fecha_comentario = Intl.DateTimeFormat('en-US').format(date);
         
         let respuesta = await pool.query(`SELECT * FROM f_insert_comentario_publicacion($1, $2, $3, $4)`,
             [

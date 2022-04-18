@@ -1,4 +1,5 @@
 const pool = require('../../database/dbConection');
+const fs = require('fs');
 
 const readT_publicaciones = async (req) => {
 
@@ -46,7 +47,7 @@ const crearPublicacion = async (req) => {
 
         const date = new Date;
 
-        const fecha_publicacion = Intl.DateTimeFormat('es-MX').format(date);
+        const fecha_publicacion = Intl.DateTimeFormat('en-US').format(date);
 
         let respuesta = await pool.query(`SELECT * FROM f_insert_publicacion($1, $2, $3, $4)`,
             [
@@ -101,7 +102,7 @@ const actualizarPublicacion = async (req) => {
 
         const date = new Date;
 
-        const fecha_publicacion = Intl.DateTimeFormat('es-MX').format(date);
+        const fecha_publicacion = Intl.DateTimeFormat('en-US').format(date);
 
         let respuesta = await pool.query(`SELECT * FROM f_update_publicacion($1, $2, $3, $4, 5$)`,
             [
@@ -132,13 +133,21 @@ const eliminarPublicacion = async (id) => {
 
     try {
         
-        let respuesta = await pool.query(`DELETE FROM t_publicaciones WHERE id_publicacion = $1 RETURNING *`, [id]);
+        let respuesta = await pool.query(`SELECT * FROM f_eliminar_comentarios_likes_fotos($1)`, [id]);
 
-        let respuesta2 = await pool.query(`DELETE FROM t_comentarios_publicaciones WHERE id_publicacion = $1 RETURNING *`, [id]);
+        for (let i = 0; i < respuesta.rows.length; i++) {
+            fs.unlinkSync(`src/uploads/uploads2/${respuesta.rows[i].nombre_imagen}`);
+        }
 
-        respuesta.rows.comentarios[0] = respuesta2;
+        respuesta = await pool.query(`SELECT * FROM f_eliminar_publicacion($1)`, [id]);
 
-        return respuesta.rows[0];
+        if (JSON.stringify(respuesta.rows) === '[]') {
+            respuesta = null;
+        } else {
+            respuesta = respuesta.rows[0];
+        }
+
+        return respuesta;
 
     } catch (error) {
         console.log(error);
@@ -177,7 +186,7 @@ const buscarIdCliente = async (id) => {
 
     try {
 
-        let respuesta = await pool.query(`SELECT * FROM t_clientes WHERE id_clientes = $1`, [id]);
+        let respuesta = await pool.query(`SELECT * FROM f_searcht_usuario_id($1)`, [id]);
 
         if (JSON.stringify(respuesta.rows) === '[]') {
             respuesta = null;

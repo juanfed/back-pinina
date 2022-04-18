@@ -145,3 +145,54 @@ language 'sql';
 
 alter table t_clientes add constraint t_clientes_correo_unique unique (correo)
 
+create or replace function f_create_cliente_registro( i_primer_nombre text, i_segundo_nombre text,
+	i_primer_apellido text, i_segundo_apellido text,i_correo text,
+	i_codigo_ubicacion_geografica_pais integer,
+            i_contraseña text ) returns setof t_clientes as
+$$
+DECLARE 
+ BEGIN
+ RETURN QUERY
+ INSERT INTO t_clientes(primer_nombre,
+	segundo_nombre, primer_apellido, segundo_apellido, correo,
+	codigo_ubicacion_geografica_pais, password)
+	
+	VALUES ( i_primer_nombre, i_segundo_nombre,
+	i_primer_apellido, i_segundo_apellido,i_correo,
+	i_codigo_ubicacion_geografica_pais,
+            i_contraseña
+	)
+	
+	RETURNING *;
+ END;
+
+$$
+language 'plpgsql';
+
+CREATE OR REPLACE FUNCTION f_eliminar_comentarios_likes_fotos(
+	p_id_publicacion INTEGER
+) RETURNS SETOF t_fotos_publicaciones AS
+$$
+	DELETE FROM t_comentarios_publicaciones WHERE id_publicacion =  p_id_publicacion;
+	
+	DELETE FROM t_likes_publicacion WHERE id_publicacion = p_id_publicacion;
+	
+	DELETE FROM t_fotos_publicaciones WHERE id_publicacion = p_id_publicacion RETURNING *;
+$$
+language 'sql';
+
+CREATE OR REPLACE FUNCTION f_eliminar_publicacion(
+	p_id_publicacion INTEGER
+) RETURNS SETOF t_publicaciones AS
+$$
+	DELETE FROM t_publicaciones WHERE id_publicacion = p_id_publicacion RETURNING *;
+$$
+language 'sql';
+
+CREATE OR REPLACE FUNCTION f_searcht_usuario_id(
+	p_id_usuario INTEGER
+) RETURNS SETOF t_usuario AS
+$$
+	SELECT * FROM t_usuario WHERE id_usuario = p_id_usuario;
+$$
+language 'sql';

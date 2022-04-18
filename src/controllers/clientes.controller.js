@@ -213,9 +213,8 @@ const createT_clientes = async (req) => {
 
     contraseña = await encryptPassword(contraseña);
    
-    let query = `SELECT * FROM f_create_cliente_registro(\'${primer_nombre}\',\'${segundo_nombre}\',\'${primer_apellido}\',\'${segundo_apellido}\',\'${correo}\',${codigo_ubicacion_geografica_pais},\'${contraseña}\')`;
+    let query = `SELECT * FROM f_create_usuario_registro(\'${primer_nombre}\',\'${segundo_nombre}\',\'${primer_apellido}\',\'${segundo_apellido}\',\'${correo}\',${codigo_ubicacion_geografica_pais},\'${contraseña}\')`;
     let respuesta = await pool.query(query);
-
     /**Para verificar que se retorne la fila con los datos actualizados
      * se convierte la respuesta en un JSONArray y se compara con []
      */
@@ -255,7 +254,7 @@ const searcht_clientesId = async (id_clientes) => {
 const searchT_clienteCorreo = async (correo) => {
   try {
   
-    let cliente = await pool.query(`select * from f_cliente_correo(\'${correo}\')`);
+    let cliente = await pool.query(`select * from f_usuario_correo(\'${correo}\')`);
     if (JSON.stringify(cliente.rows) === '[]') {
       //Se le asigna null a la respuesta
       return null

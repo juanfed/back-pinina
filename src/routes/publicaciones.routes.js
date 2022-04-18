@@ -205,7 +205,8 @@ router.delete('/eliminarpublicaciones/:id_publicacion', async(req, res) => {
         } else {
             return res.status(200).json({
                 code: 1,
-                msg: `publicación ha sido eliminada exitosamente!`
+                msg: `publicación ha sido eliminada exitosamente!`,
+                publicacionEliminada
             });
         }
         
