@@ -31,7 +31,7 @@ const updateT_clientes = async (req) => {
   try {
     const {
       id_clientes,
-      tipo_identificacion,
+      id_tipo_identificacion,
       identificacion,
       primer_nombre,
       segundo_nombre,
@@ -43,19 +43,19 @@ const updateT_clientes = async (req) => {
       codigo_ubicacion_geografica_pais,
       codigo_ubicacion_geografica_departamento,
       codigo_ubicacion_geografica_ciudad,
-      codigo_ubicacion_geografica_localidad,
-      id_usuario,
+      codigo_ubicacion_geografica_localidad
+      
     } = req.body;
 
     let respuesta = await pool.query(
-      `SELECT * FROM f_updateclientes($1::numeric, $2::character varying,
+      `SELECT * FROM f_updateusuario($1::numeric, $2::integer,
                             $3::character varying, $4::character varying, $5::character varying, $6::character varying,
                             $7::character varying, $8::character varying, $9::character varying,
-                            $10::character varying, $11::numeric, $12::numeric, $13::numeric, $14::numeric,
-                            $15::numeric)`,
+                            $10::character varying, $11::numeric, $12::numeric, $13::numeric, $14::numeric
+                          )`,
       [
         id_clientes,
-        tipo_identificacion,
+        id_tipo_identificacion,
         identificacion,
         primer_nombre,
         segundo_nombre,
@@ -67,11 +67,11 @@ const updateT_clientes = async (req) => {
         codigo_ubicacion_geografica_pais,
         codigo_ubicacion_geografica_departamento,
         codigo_ubicacion_geografica_ciudad,
-        codigo_ubicacion_geografica_localidad,
-        id_usuario,
+        codigo_ubicacion_geografica_localidad
+        
       ]
     );
-
+   
     /**Para verificar que se retorne la fila con los datos actualizados
      * se convierte la respuesta en un JSONArray y se compara con []
      */

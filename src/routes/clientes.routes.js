@@ -36,7 +36,7 @@ router.put('/actualizarclientes', async (req, res) => {
     //Se toman solo los campos necesarios que vienen en el body de la petición
     let {
       id_clientes,
-      tipo_identificacion,
+      id_tipo_identificacion,
       identificacion,
       primer_nombre,
       segundo_nombre,
@@ -61,12 +61,12 @@ router.put('/actualizarclientes', async (req, res) => {
         campo: id_clientes,
       },
       {
-        nombre: 'tipo_identificacion',
-        campo: tipo_identificacion,
+        nombre: 'id_tipo_identificacion',
+        campo: id_tipo_identificacion,
       },
       {
-        nombre: 'identificacion',
-        campo: identificacion,
+        nombre: 'id_tipo_identificacion',
+        campo: id_tipo_identificacion,
       },
       {
         nombre: 'primer_nombre',
