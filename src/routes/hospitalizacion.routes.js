@@ -1,20 +1,19 @@
 const router = require('express').Router();
 
+const validarcampos = require('../utils/validateFields');
 const respuestaT_clientes = require('../controllers/clientes.controller');
 const respuestaT_mascotas = require('../controllers/mascotas.contrroller');
 const respuestaT_hospitalizacion = require('../controllers/hospitalizacion.controller');
 
 router.post('/mostrarhospitalizacion', async (req, res) => {
   try {
-    const { id_mascotas, id_clientes, id_usuario } = req.body;
+
+    const { id_mascotas, id_usuario } = req.body;
+
     const campos = [
       {
         nombre: 'id_mascotas',
         campo: id_mascotas,
-      },
-      {
-        nombre: 'id_clientes',
-        campo: id_clientes,
       },
       {
         nombre: 'id_usuario',
@@ -22,7 +21,7 @@ router.post('/mostrarhospitalizacion', async (req, res) => {
       },
     ];
 
-    const campoVacio = campos.find((x) => !x.campo);
+    const campoVacio = validarcampos(campos);
 
     if (campoVacio)
       return res.status(400).json({
@@ -31,30 +30,28 @@ router.post('/mostrarhospitalizacion', async (req, res) => {
       });
 
     const existe_cliente = await respuestaT_clientes.searcht_clientesId(
-      id_clientes
-    );
+    id_usuario);
+
     if (!existe_cliente) {
       return res.status(400).json({
         ok: false,
-        msg: `No existe el cliente con id: ${id_clientes}`,
+        msg: `No existe el cliente con id: ${id_usuario}`,
       });
     }
 
     const existe_mascota = await respuestaT_mascotas.obtenerMascotaPorId(
       id_mascotas
     );
+
     if (!existe_mascota) {
       return res.status(400).json({
         ok: false,
         msg: `No esta registrada esta mascota con id: ${id_mascotas}`,
       });
     }
-    const respuesta_readT_hospitalizacion =
-      await respuestaT_hospitalizacion.readT_hospitalizacion(
-        id_mascotas,
-        id_clientes,
-        id_usuario
-      );
+
+    const respuesta_readT_hospitalizacion = await respuestaT_hospitalizacion.readT_hospitalizacion(req);
+
     if (!respuesta_readT_hospitalizacion) {
       res.status(400).json({
         code: -1,
@@ -67,6 +64,7 @@ router.post('/mostrarhospitalizacion', async (req, res) => {
         user: respuesta_readT_hospitalizacion,
       });
     }
+    
   } catch (err) {
     console.log(err);
     res.status(400).json({
