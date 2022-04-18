@@ -97,15 +97,15 @@ const deleteT_citas = async(req) => {
 const updateT_citas = async(req) => {
     try {
         const {id_cita, fecha_cita, hora_cita, id_tipo_cita, descripcion_cita, paciente_cita,
-            propietario_cita, profecional_cita, estado_cita, dia_cita} = req.body;
+            propietario_cita, profecional_cita, estado_cita, dia_cita, mes_cita} = req.body;
 
         let respuesta =
-            await pool.query(`SELECT * FROM f_updatecitas($1::integer, $2::text,
+            await pool.query(`SELECT * FROM f_update_citas($1::integer, $2::text,
                             $3::text, $4::numeric, $5::text, $6::numeric,
-                            $7::numeric, $8::numeric, $9::numeric, $10::text)`, [
+                            $7::numeric, $8::numeric, $9::numeric, $10::text, $11::text)`, [
                 id_cita, fecha_cita, hora_cita, id_tipo_cita, descripcion_cita,
                 paciente_cita, propietario_cita, profecional_cita, estado_cita,
-                dia_cita
+                dia_cita, mes_cita
             ]);
         
         

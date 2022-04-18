@@ -141,8 +141,7 @@ router.put("/actualizarcitas", async(req, res) => {
     try {
         
         //Se toman solo los campos necesarios que vienen en el body de la petición
-        let {id_cita, fecha_cita, hora_cita, id_tipo_cita, descripcion_cita, paciente_cita,
-            propietario_cita, profecional_cita, estado_cita, dia_cita} = req.body;
+        let {id_cita, fecha_cita, hora_cita, id_tipo_cita, descripcion_cita, paciente_cita, propietario_cita, profecional_cita, estado_cita, dia_cita, mes_cita} = req.body;
         /**Se guardan todos los campos recibidos en el body
          * de la petición dentro de un array
          */
@@ -177,6 +176,9 @@ router.put("/actualizarcitas", async(req, res) => {
             },{
                 nombre: 'dia_cita',
                 campo: dia_cita
+            },{
+                nombre: 'mes_cita',
+                campo: mes_cita
             }
         ];
 
