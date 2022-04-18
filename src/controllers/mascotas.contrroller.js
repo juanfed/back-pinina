@@ -145,7 +145,7 @@ const updateT_mascotas = async (
 ) => {
   try {
     let respuesta = await pool.query(
-      `SELECT * from f_updatemascotas($1::numeric,$2::text,$3::numeric,$4::numeric,$5::numeric,$6::numeric,$7::numeric,
+      `SELECT * from f_update_mascotas($1::numeric,$2::text,$3::numeric,$4::numeric,$5::numeric,$6::numeric,$7::numeric,
             $8::numeric,$9::numeric,$10::text,$11::numeric,$12::text)`,
       [
         id_mascotas,
