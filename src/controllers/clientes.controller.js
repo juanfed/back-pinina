@@ -171,8 +171,7 @@ const readallt_clientes = async (req) => {
 const searchT_clientes = async (id_usuario, param_busqueda) => {
   try {
     let respuesta = await pool.query(
-      `SELECT * from f_searchclientes
-                            ($1::numeric, $2::character varying)`,
+      `SELECT * from f_searchusuario($1::numeric, $2::character varying)`,
       [id_usuario, param_busqueda]
     );
 
