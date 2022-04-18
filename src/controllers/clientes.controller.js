@@ -1,15 +1,15 @@
 const pool = require('../../database/dbConection');
-const { encryptPassword } = require("../utils/encryptPassword");  
+const { encryptPassword } = require("../utils/encryptPassword");
 const readT_clientes = async (req) => {
   try {
     const { id_usuario } = req.body;
 
     let respuesta = await pool.query(
-      `SELECT * from f_readclientes
-                                ($1::numeric)`,
+      `SELECT * from f_readt_usuarios_byid
+                                ($1)`,
       [id_usuario]
     );
-
+   
     /**Para verificar que el resultado de la consulta no arroja ningún registro
      * se convierte la respuesta en un JSONArray y se compara con []
      */
@@ -195,11 +195,11 @@ const searchT_clientes = async (id_usuario, param_busqueda) => {
 
 const createT_clientes = async (req) => {
   try {
-    
+
     let { tipo_identificacion, identificacion, primer_nombre, segundo_nombre,
-      primer_apellido, segundo_apellido, direccion, telefono, correo, contraseña, codigo_ubicacion_geografica_pais, codigo_ubicacion_geografica_departamento, codigo_ubicacion_geografica_ciudad, codigo_ubicacion_geografica_localidad 
+      primer_apellido, segundo_apellido, direccion, telefono, correo, contraseña, codigo_ubicacion_geografica_pais, codigo_ubicacion_geografica_departamento, codigo_ubicacion_geografica_ciudad, codigo_ubicacion_geografica_localidad
     } = req.body;
-    
+
     contraseña = await encryptPassword(contraseña);
 
     let respuesta = await pool.query(`SELECT * FROM f_create_usuario_registro($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`,
@@ -260,8 +260,8 @@ const searcht_clientesId = async (id_clientes) => {
 };
 const searchT_clienteCorreo = async (correo) => {
   try {
-    
-    let respuesta = await pool.query(`SELECT * FROM f_usuario_correo($1)`,[correo]);
+
+    let respuesta = await pool.query(`SELECT * FROM f_usuario_correo($1)`, [correo]);
 
     if (JSON.stringify(respuesta.rows) === '[]') {
       //Se le asigna null a la respuesta

@@ -1,7 +1,8 @@
 const router = require("express").Router();
 
 const respuestaT_citas = require('../controllers/citas.controller');
-
+const respuestaT_usuarios = require('../controllers/clientes.controller');
+const respuestaT_mascotas = require('../controllers/mascotas.contrroller')
 //===========================================
 //Mostrar citas en t_citas
 //===========================================
@@ -37,10 +38,24 @@ router.post("/crearcitas", async(req, res) => {
         //Se toman solo los campos necesarios que vienen en el body de la petición
         let {fecha_cita, hora_cita, id_tipo_cita, descripcion_cita, paciente_cita,
             propietario_cita, profecional_cita, estado_cita, dia_cita} = req.body;
+        req.body.id_usuario = propietario_cita;
+       
         /**Se guardan todos los campos recibidos en el body
          * de la petición dentro de un array
          */
-        
+        const paciente_c = await respuestaT_mascotas.obtenerMascotaPorId(paciente_cita);
+        const propietario_c = await respuestaT_usuarios.readT_clientes(req);
+        if(propietario_c == null){
+            return res.status(400).json({
+                code: -2,
+                message: "No existe el usuario en el sistema."
+            })
+        }else  if(paciente_c == null){
+            return res.status(400).json({
+                code: -2,
+                message: "No existe la mascota en el sistema."
+            })
+        }
         const campos = [{
                 nombre: 'fecha_cita',
                 campo: fecha_cita
