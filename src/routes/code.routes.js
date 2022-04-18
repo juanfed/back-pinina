@@ -111,12 +111,14 @@ router.post("/verify-code-register", async (req, res) => {
     const {
       codigo,
       correo,
-      nombres,
-      apellidos,
+      primer_nombre,
+      segundo_nombre,
+      primer_apellido,
+      segundo_apellido,
       telefono,
       ubicacion,
       password,
-      firewall,
+      firewall
     } = req.body;
 
     const campos = [
@@ -125,13 +127,22 @@ router.post("/verify-code-register", async (req, res) => {
         campo: correo,
       },
       {
-        nombre: "nombres",
-        campo: nombres,
+        nombre: "primer_nombre",
+        campo: primer_nombre,
       },
       {
-        nombre: "apellidos",
-        campo: apellidos,
+        nombre: "segundo_nombre",
+        campo: segundo_nombre,
       },
+      {
+        nombre: "primer_apellido",
+        campo: primer_apellido,
+      },
+      {
+        nombre: "segundo_apellido",
+        campo: segundo_apellido,
+      },
+     
       {
         nombre: "password",
         campo: password,
@@ -168,11 +179,7 @@ router.post("/verify-code-register", async (req, res) => {
         msg: `No ha ingresado el campo ${campoVacio.nombre}`,
       });
 
-    req.body.primer_nombre = nombres.split(' ')[0];
-    req.body.segundo_nombre = nombres.split(' ')[1];
-
-    req.body.primer_apellido = apellidos.split(' ')[0];
-    req.body.segundo_apellido = apellidos.split(' ')[1];
+   
     
     // Verificar que no se el tiempo de expiración del codigo
     const usuarioCodigo = await responseT_code.readT_usuario_codigo(req);
@@ -214,6 +221,7 @@ router.post("/verify-code-register", async (req, res) => {
       msg: verifyRegister.respuesta,
     });
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       code: -1,
       msg: "Ha ocurrido un error al intentar verificar un codigo de registro"
