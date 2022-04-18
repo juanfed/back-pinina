@@ -111,11 +111,7 @@ router.put('/actualizarclientes', async (req, res) => {
       {
         nombre: 'codigo_ubicacion_geografica_localidad',
         campo: codigo_ubicacion_geografica_localidad,
-      },
-      {
-        nombre: 'id_usuario',
-        campo: id_usuario,
-      },
+      }
     ];
 
     const campoVacio = campos.find((x) => !x.campo);
