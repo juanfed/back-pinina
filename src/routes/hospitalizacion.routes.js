@@ -285,7 +285,7 @@ router.put('/actualizarhospitalizacion', async (req, res) => {
       fecha_salida_hoz,
       estado_hoz,
       id_mascotas,
-      id_clientes,
+   
       id_usuario,
       id_hozpitalizacion,
 
@@ -325,10 +325,7 @@ router.put('/actualizarhospitalizacion', async (req, res) => {
         nombre: 'estado_hoz',
         campo: estado_hoz,
       },
-      {
-        nombre: 'id_clientes',
-        campo: id_clientes,
-      },
+    
       {
         nombre: 'id_usuario',
         campo: id_usuario,
@@ -352,7 +349,7 @@ router.put('/actualizarhospitalizacion', async (req, res) => {
       });
 
     const existe_cliente = await respuestaT_clientes.searcht_clientesId(
-      id_clientes
+      id_usuario
     );
     if (!existe_cliente) {
       return res.status(400).json({
@@ -394,7 +391,6 @@ router.put('/actualizarhospitalizacion', async (req, res) => {
           fecha_salida_hoz,
           estado_hoz,
           id_mascotas,
-          id_clientes,
           id_usuario,
           id_hozpitalizacion
         );
@@ -476,7 +472,7 @@ router.put('/actualizarhospitalizacion', async (req, res) => {
           fecha_salida_hoz,
           estado_hoz,
           id_mascotas,
-          id_clientes,
+       
           id_usuario,
           id_hozpitalizacion
         );

@@ -136,14 +136,14 @@ const updateT_hospitalizacion = async (
   fecha_salida_hoz,
   estado_hoz,
   id_mascotas,
-  id_clientes,
+  
   id_usuario,
   id_hozpitalizacion
 ) => {
   try {
     let respuesta = await pool.query(
       `SELECT * from f_updateT_hospitalizacion
-      ($1::text,$2::text,$3::text,$4::text,$5::numeric, $6::text,$7::text,$8::numeric,$9::numeric,$10::numeric,$11::numeric,$12::numeric)`,
+      ($1::text,$2::text,$3::text,$4::text,$5::numeric, $6::text,$7::text,$8::numeric,$9::numeric,$10::numeric,$11::numeric)`,
       [
         tipo_hozpitalizacion,
         hora_hoz,
@@ -154,7 +154,7 @@ const updateT_hospitalizacion = async (
         fecha_salida_hoz,
         estado_hoz,
         id_mascotas,
-        id_clientes,
+       
         id_usuario,
         id_hozpitalizacion,
       ]
