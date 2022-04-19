@@ -1,5 +1,6 @@
 const router = require('express').Router();
 
+const validarcampos = require('../utils/validateFields');
 const respuestaT_historias_mascotas = require('../controllers/historialmascotas.controller');
 const respuestaT_clientes = require('../controllers/clientes.controller');
 const respuestaT_mascotas = require('../controllers/mascotas.contrroller');
@@ -322,7 +323,8 @@ router.get('/examenes', async (req, res) => {
 
 router.post('/MostrarHistorialMascota', async (req, res) => {
   try {
-    const { id_usuario, id_mascotas, id_clientes } = req.body;
+    
+    const { id_usuario, id_mascotas} = req.body;
 
     const campos = [
       {
@@ -332,14 +334,10 @@ router.post('/MostrarHistorialMascota', async (req, res) => {
       {
         nombre: 'id_mascotas',
         campo: id_mascotas,
-      },
-      {
-        nombre: 'id_clientes',
-        campo: id_clientes,
-      },
+      }
     ];
 
-    const campoVacio = campos.find((x) => !x.campo);
+    const campoVacio = validarcampos(campos);
 
     if (campoVacio) {
       return res.status(400).json({
@@ -348,29 +346,25 @@ router.post('/MostrarHistorialMascota', async (req, res) => {
       });
     }
 
-    const mostrar_historias =
-      await respuestaT_historias_mascotas.readt_historias_clinicas(
-        id_usuario,
-        id_mascotas,
-        id_clientes
-      );
+    const mostrar_historias = await respuestaT_historias_mascotas.readt_historias_clinicas(req);
+
     if (!mostrar_historias) {
-      res.status(400).json({
+      return res.status(400).json({
         code: -1,
         mostrar_historias,
-        msg: `error al imprimir historias`,
+        msg: `error al imprimir historias`
       });
     } else {
-      res.json({
+      return res.json({
         ok: true,
         msg: `insercion realizada  exitosamente`,
         mostrar_historias,
       });
     }
+
   } catch (err) {
     console.log(err);
-
-    res.status(500).json({
+    return res.status(500).json({
       ok: false,
       error: err.message,
     });

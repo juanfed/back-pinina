@@ -1,12 +1,11 @@
 const pool = require('../../database/dbConection');
 
-const readT_hospitalizacion = async (id_mascotas, id_clientes, id_usuario) => {
+const readT_hospitalizacion = async (req) => {
   try {
-    let respuesta = await pool.query(
-      `SELECT * from f_readT_hospitalizacion
-                                    ($1::numeric,$2::numeric,$3::numeric)`,
-      [id_mascotas, id_clientes, id_usuario]
-    );
+
+    const { id_mascotas, id_usuario } = req.body;
+
+    let respuesta = await pool.query(`SELECT * FROM f_readt_hospitalizacion($1, $2)`,[id_mascotas, id_usuario]);
 
     /**Para verificar que el resultado de la consulta no arroja ningún registro
      * se convierte la respuesta en un JSONArray y se compara con []
