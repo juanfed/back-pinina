@@ -9,7 +9,7 @@ const readT_clientes = async (req) => {
                                 ($1)`,
       [id_usuario]
     );
-   
+
     /**Para verificar que el resultado de la consulta no arroja ningún registro
      * se convierte la respuesta en un JSONArray y se compara con []
      */
@@ -44,7 +44,7 @@ const updateT_clientes = async (req) => {
       codigo_ubicacion_geografica_departamento,
       codigo_ubicacion_geografica_ciudad,
       codigo_ubicacion_geografica_localidad
-      
+
     } = req.body;
 
     let respuesta = await pool.query(
@@ -68,10 +68,10 @@ const updateT_clientes = async (req) => {
         codigo_ubicacion_geografica_departamento,
         codigo_ubicacion_geografica_ciudad,
         codigo_ubicacion_geografica_localidad
-        
+
       ]
     );
-   
+
     /**Para verificar que se retorne la fila con los datos actualizados
      * se convierte la respuesta en un JSONArray y se compara con []
      */
@@ -191,6 +191,69 @@ const searchT_clientes = async (id_usuario, param_busqueda) => {
     throw new Error(`clientes.controller.js->readallt_clientes()\n${err}`);
   }
 };
+const createT_usuario_registro = async (req) => {
+  try {
+
+    let { primer_nombre, segundo_nombre,
+      primer_apellido, segundo_apellido, correo, contraseña, codigo_ubicacion_geografica_pais, nombre_completo, apellidos
+    } = req.body;
+    contraseña = await encryptPassword(contraseña);
+
+    const nombres = nombre_completo.split(' ');
+    if (nombre_completo && apellidos) {
+      try {
+        primer_nombre = nombres[0];
+        segundo_nombre = nombres[1];
+        if (segundo_nombre == undefined) {
+          segundo_nombre = "";
+        }
+
+      } catch (err) {
+        return null;
+
+
+      }
+      try {
+
+        apellidos = apellidos.split(' ');
+        primer_apellido = apellidos[0];
+        segundo_apellido = apellidos[1];
+        if (segundo_apellido == undefined) {
+          segundo_apellido = "";
+        }
+      } catch (err) {
+        return null;
+      }
+      console.log(primer_nombre, segundo_nombre, primer_apellido, segundo_apellido)
+    
+      
+        //registro simple
+       
+        let respuesta = await pool.query(`Select * from f_create_usuario_registro($1,$2,$3,$4,$5,$6,$7)`,
+          [primer_nombre,
+            segundo_nombre,
+            primer_apellido,
+            segundo_apellido,
+            correo,
+            contraseña,
+            codigo_ubicacion_geografica_pais
+
+          ])
+        if (JSON.stringify(respuesta.rows) === '[]') {
+          //Se le asigna null a la respuesta
+          return null;
+        } else {
+          return respuesta.rows;
+        }
+
+    }
+
+
+  } catch (err) {
+    console.log(err);
+    throw new Error(`Error en createT_usuario_registro()\n${err}`);
+  }
+};
 
 const createT_clientes = async (req) => {
   try {
@@ -198,8 +261,8 @@ const createT_clientes = async (req) => {
     let { tipo_identificacion, identificacion, primer_nombre, segundo_nombre,
       primer_apellido, segundo_apellido, direccion, telefono, correo, contraseña, codigo_ubicacion_geografica_pais, codigo_ubicacion_geografica_departamento, codigo_ubicacion_geografica_ciudad, codigo_ubicacion_geografica_localidad
     } = req.body;
-
     contraseña = await encryptPassword(contraseña);
+
 
     let respuesta = await pool.query(`SELECT * FROM f_create_usuario_registro($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`,
       [
@@ -354,6 +417,7 @@ const getT_mascotaIdporIdclienteYIdusuario = async (
 
 module.exports = {
   searchT_clienteCorreo,
+  createT_usuario_registro,
   readT_clientes,
   updateT_clientes,
   readallt_clientes,

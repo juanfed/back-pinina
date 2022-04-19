@@ -144,7 +144,7 @@ router.put('/actualizarclientes', async (req, res) => {
   }
 });
 
-router.post('/crearcliente', async (req, res) => {
+router.post('/crearusuario', async (req, res) => {
   try {
     //Se toman solo los campos necesarios que vienen en el body de la petición
 
@@ -255,6 +255,82 @@ router.post('/crearcliente', async (req, res) => {
     });
   }
 });
+
+router.post('/crearusuario/pinina', async (req, res) => {
+  try {
+    //Se toman solo los campos necesarios que vienen en el body de la petición
+
+    const { correo, contraseña, codigo_ubicacion_geografica_pais, nombre_completo, apellidos    } = req.body;
+    
+    /**Se guardan todos los campos recibidos en el body
+     * de la petición dentro de un array
+     */
+
+    const campos = [
+      {
+        nombre: 'correo',
+        campo: correo
+      },
+      {
+        nombre: 'contraseña',
+        campo: contraseña
+      },
+      {
+        nombre: 'codigo_ubicacion_geografica_pais',
+        campo: codigo_ubicacion_geografica_pais
+      },
+      {
+        nombre: 'nombre_completo',
+        campo: nombre_completo
+      },
+      {
+        nombre: 'apellidos',
+        campo: apellidos
+      }
+      
+    ];
+
+    const campoVacio = validarCampos(campos);
+
+    if (campoVacio) {
+      res.status(400).json({
+        code: -2,
+        msg: `No ha ingresado el campo ${campoVacio.nombre}`,
+      });
+    }
+      
+    const cliente = await respuestaT_clientes.searchT_clienteCorreo(correo);
+
+    if (!cliente) {
+      const createT_clientes = await respuestaT_clientes.createT_usuario_registro(req);
+
+      if (!createT_clientes) {
+        res.status(400).json({
+          code: -1,
+          msg: `Ocurrió un error al registrar el cliente cliente`,
+        });
+      } else {
+        res.status(200).json({
+          code: 1,
+          user: createT_clientes[0],
+        });
+      }
+    } else {
+      res.status(400).json({
+        code: -2,
+        msg: `El cliente ingresado ya se encuentra registrado`,
+      })
+    }
+
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({
+      code: -1,
+      msg: err.message,
+    });
+  }
+});
+
 
 router.post('/buscarclientes', async (req, res) => {
   try {
