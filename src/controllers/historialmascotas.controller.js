@@ -265,16 +265,17 @@ const readt_examenidhidm = async (req, res) => {
   }
 };
 
-const readt_historias_clinicas = async (
-  id_usuario,
-  id_mascotas,
-  id_clientes
-) => {
+const readt_historias_clinicas = async (req) => {
   try {
-    let respuesta = await pool.query(
+    
+    const { id_usuario, id_mascotas} = req.body;
+
+    let respuesta = await pool.query(`SELECT * FROM f_read_historias_clinicas($1, $2)`,[id_usuario, id_mascotas]);
+
+    /* let respuesta1 = await pool.query(
       ` select * from f_read_historias_clinicas($1::numeric,$2::numeric,$3::numeric)`,
       [id_usuario, id_mascotas, id_clientes]
-    );
+    ); */
 
     /**Se verifica si la respuesta es vacio
      */
@@ -287,6 +288,7 @@ const readt_historias_clinicas = async (
       respuesta = respuesta.rows;
     }
     return respuesta;
+
   } catch (err) {
     throw new Error(`  insert_notas ()\n${err}`);
   }
