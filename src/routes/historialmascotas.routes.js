@@ -7,7 +7,7 @@ const respuestaT_mascotas = require('../controllers/mascotas.contrroller');
 
 router.post('/InsertarHistorialClinico', async (req, res) => {
   try {
-    var id_formula;
+    
 
     const {
       fecha_grabacion,
@@ -19,7 +19,7 @@ router.post('/InsertarHistorialClinico', async (req, res) => {
       diagnostico,
       id_usuario,
       id_mascotas,
-
+      id_formula,
       id_medicina,
       dosificacion,
       frecuencia,
@@ -82,6 +82,7 @@ router.post('/InsertarHistorialClinico', async (req, res) => {
       !dias ||
       !recomendacion
     ) {
+      
       const insert_historial =
         await respuestaT_historias_mascotas.insert_historial_clinico(
           fecha_grabacion,

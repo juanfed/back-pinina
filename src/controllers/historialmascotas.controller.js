@@ -13,6 +13,7 @@ const insert_historial_clinico = async (
   id_mascotas
 ) => {
   try {
+  
     let respuesta = await pool.query(
       `SELECT * from  public.f_insert_historial_clinico(
                 $1::text,
