@@ -243,7 +243,7 @@ router.put('/actualizarvacuna', async (req, res) => {
       fecha_proxima_vacuna,
       sintomas_vacuna,
       id_mascotas,
-      id_clientes,
+
       id_usuario,
     } = req.body;
     const campos = [
@@ -267,10 +267,7 @@ router.put('/actualizarvacuna', async (req, res) => {
         nombre: 'id_mascotas',
         campo: id_mascotas,
       },
-      {
-        nombre: 'id_clientes',
-        campo: id_clientes,
-      },
+     
       {
         nombre: 'id_usuario',
         campo: id_usuario,
@@ -294,7 +291,7 @@ router.put('/actualizarvacuna', async (req, res) => {
     }
 
     const existe_cliente = await respuestaT_clientes.searcht_clientesId(
-      id_clientes
+      id_usuario
     );
     if (!existe_cliente) {
       return res.status(400).json({
@@ -320,7 +317,6 @@ router.put('/actualizarvacuna', async (req, res) => {
       fecha_proxima_vacuna,
       sintomas_vacuna,
       id_mascotas,
-      id_clientes,
       id_usuario
     );
     if (!respuesta_readT_vacunas) {

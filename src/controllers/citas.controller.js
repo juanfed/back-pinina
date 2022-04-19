@@ -30,6 +30,8 @@ const readT_citas = async(req) => {
     }
 }
 
+
+
 const createT_citas = async(req) => {
     try {
         const {fecha_cita, hora_cita, id_tipo_cita, descripcion_cita, paciente_cita,

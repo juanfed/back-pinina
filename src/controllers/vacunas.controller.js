@@ -76,13 +76,13 @@ const updateT_vacunas = async (
   fecha_proxima_vacuna,
   sintomas_vacuna,
   id_mascotas,
-  id_clientes,
+ 
   id_usuario
 ) => {
   try {
     let respuesta = await pool.query(
-      `SELECT id_tipo_vacunas, fecha_vacuna, dosis, fecha_proxima_vacuna, sintomas_vacuna, id_mascotas, id_clientes, id_usuario from f_updatevacunas
-                                      ($1::numeric,$2::numeric,$3::text,$4::text,$5::text,$6::text,$7::numeric,$8::numeric,$9::numeric)`,
+      `SELECT id_tipo_vacunas, fecha_vacuna, dosis, fecha_proxima_vacuna, sintomas_vacuna, id_mascotas,  id_usuario from f_updatevacunas
+                                      ($1::numeric,$2::numeric,$3::text,$4::text,$5::text,$6::text,$7::numeric,$8::numeric)`,
       [
         id_vacuna,
         id_tipo_vacunas,
@@ -91,7 +91,6 @@ const updateT_vacunas = async (
         fecha_proxima_vacuna,
         sintomas_vacuna,
         id_mascotas,
-        id_clientes,
         id_usuario,
       ]
     );
