@@ -130,18 +130,12 @@ router.post("/verify-code-register", async (req, res) => {
         nombre: "primer_nombre",
         campo: primer_nombre,
       },
-      {
-        nombre: "segundo_nombre",
-        campo: segundo_nombre,
-      },
+ 
       {
         nombre: "primer_apellido",
         campo: primer_apellido,
       },
-      {
-        nombre: "segundo_apellido",
-        campo: segundo_apellido,
-      },
+      
      
       {
         nombre: "password",
