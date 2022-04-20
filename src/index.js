@@ -35,18 +35,17 @@ app.use('/token', async (req, res) => {
   try {
     const { token } = req.body;
     if (token == undefined || token == null) {
-      return res.status(403).json(false)
+      return res.status(403).json({estado:false})
     } else {
 
-      const token = authHeader.split(' ')[1];
 
       jwt.verify(token, process.env.SECRETPRIVATEKEY, function (err, user) {
         if (err) {
-          return res.status(403).json(false
+          return res.status(403).json({estado:false}
 
           );
         } else {
-          return res.status(403).json(true
+          return res.status(403).json({estado:true}
 
           );
         }
@@ -56,6 +55,7 @@ app.use('/token', async (req, res) => {
     }
 
   } catch (err) {
+    console.log(err)
     return res.status(500).json({
       message: "Error en /token",
       code: -1
