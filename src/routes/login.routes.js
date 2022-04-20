@@ -1,29 +1,62 @@
 const router = require("express").Router();
 
-const respuestaLoginT_usuario= require('../controllers/login.controller');
+const respuestaLoginT_usuario = require('../controllers/login.controller');
 const respuestaAdmin = require("../controllers/adminuser.controller");
 const tokenController = require("../controllers/token.controller");
 //===========================================
 //Insertar los datos en t_usuario
 //===========================================
-router.post("/login/loginPinina", async(req, res) => {
-    try{
+router.get('/token', async (req, res) => {
+    try {
+        const { token } = req.body;
+        if (token == undefined || token == null) {
+            return res.status(403).json(false)
+        } else {
+
+            const token = authHeader.split(' ')[1];
+
+            jwt.verify(token, process.env.SECRETPRIVATEKEY, function (err, user) {
+                if (err) {
+                    return res.status(403).json(false
+
+                    );
+                } else {
+                    return res.status(403).json(true
+
+                    );
+                }
+            });
+
+
+        }
+
+    } catch (err) {
+        return res.status(500).json({
+            message: "Error en /token",
+            code: -1
+        })
+    }
+})
+
+
+router.post("/login/loginPinina", async (req, res) => {
+    try {
         let { correo, password } = req.body;
 
         const campos = [{
-                nombre: 'correo',
-                campo: correo
-            },{
-                nombre: 'password',
-                campo: password
-            }
+            nombre: 'correo',
+            campo: correo
+        }, {
+            nombre: 'password',
+            campo: password
+        }
         ];
         /**Se busca en el array si alguno de los campos no fue enviado,
          * en caso de que se encuentre algún campo vacio se guarda el 
          * elemento encontrado dentro de la constante llamada "campoVacio"
          */
         const campoVacio = campos.find(x => !x.campo);
-            
+
         /**Si alguno de los campos NO fue enviado en la petición
          * se le muestra al cliente el nombre del campo que falta
          */
@@ -62,7 +95,7 @@ router.post("/login/loginPinina", async(req, res) => {
                 user: user
             });
         }
-        
+
     } catch (err) {
         console.log(err)
         res.status(400).json({
