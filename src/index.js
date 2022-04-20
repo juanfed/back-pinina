@@ -38,6 +38,7 @@ app.use('/', require('./routes/ubicacionesGeograficas.routes'));
 
   if(!authHeader){
     return res.status(403).json({
+      code: -3, 
       error: 'No está autorizado para realizar esta acción'
     });
   } else {
@@ -46,6 +47,7 @@ app.use('/', require('./routes/ubicacionesGeograficas.routes'));
     jwt.verify(token, process.env.SECRETPRIVATEKEY, function(err, user) {
       if (err) {
         return res.status(403).json({
+          code: -3,
           error: 'No está autorizado para realizar esta acción'
         });
       } else {
