@@ -18,8 +18,8 @@ app.use(express.static(publicPath));
 app.use(express.static('src/uploads'));
 //middleware para subir archivos
 app.use(fileUpload({
-  useTempFiles : true,
-  tempFileDir : '/tmp/'
+  useTempFiles: true,
+  tempFileDir: '/tmp/'
 }));
 
 // Permision to read values by json format
@@ -31,20 +31,50 @@ app.use('/', require('./routes/user.routes'));
 app.use('/', require('./routes/login.routes'));
 app.use('/', require('./routes/clientes.routes'));
 app.use("/", require('./routes/code.routes'));
+app.use('/token', async (req, res) => {
+  try {
+    const { token } = req.body;
+    if (token == undefined || token == null) {
+      return res.status(403).json(false)
+    } else {
 
+      const token = authHeader.split(' ')[1];
+
+      jwt.verify(token, process.env.SECRETPRIVATEKEY, function (err, user) {
+        if (err) {
+          return res.status(403).json(false
+
+          );
+        } else {
+          return res.status(403).json(true
+
+          );
+        }
+      });
+
+
+    }
+
+  } catch (err) {
+    return res.status(500).json({
+      message: "Error en /token",
+      code: -1
+    })
+  }
+})
 app.use('/', require('./routes/ubicacionesGeograficas.routes'));
- app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   const authHeader = req.headers.authorization;
 
-  if(!authHeader){
+  if (!authHeader) {
     return res.status(403).json({
-      code: -3, 
+      code: -3,
       error: 'No está autorizado para realizar esta acción'
     });
   } else {
     const token = authHeader.split(' ')[1];
 
-    jwt.verify(token, process.env.SECRETPRIVATEKEY, function(err, user) {
+    jwt.verify(token, process.env.SECRETPRIVATEKEY, function (err, user) {
       if (err) {
         return res.status(403).json({
           code: -3,
@@ -56,7 +86,7 @@ app.use('/', require('./routes/ubicacionesGeograficas.routes'));
     });
   }
 
-}); 
+});
 
 
 app.use('/', require('./routes/adminuser.routes'));

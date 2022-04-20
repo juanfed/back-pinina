@@ -6,37 +6,6 @@ const tokenController = require("../controllers/token.controller");
 //===========================================
 //Insertar los datos en t_usuario
 //===========================================
-router.get('/token', async (req, res) => {
-    try {
-        const { token } = req.body;
-        if (token == undefined || token == null) {
-            return res.status(403).json(false)
-        } else {
-
-            const token = authHeader.split(' ')[1];
-
-            jwt.verify(token, process.env.SECRETPRIVATEKEY, function (err, user) {
-                if (err) {
-                    return res.status(403).json(false
-
-                    );
-                } else {
-                    return res.status(403).json(true
-
-                    );
-                }
-            });
-
-
-        }
-
-    } catch (err) {
-        return res.status(500).json({
-            message: "Error en /token",
-            code: -1
-        })
-    }
-})
 
 
 router.post("/login/loginPinina", async (req, res) => {
