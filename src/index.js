@@ -28,8 +28,8 @@ app.use(express.json());
 // Routes
 app.use('/', require('./routes/user.routes'));
 app.use('/', require('./routes/login.routes'));
-
-/* app.use(function(req, res, next) {
+app.use('/', require('./routes/clientes.routes'));
+ app.use(function(req, res, next) {
   const authHeader = req.headers.authorization;
 
   if(!authHeader){
@@ -50,7 +50,7 @@ app.use('/', require('./routes/login.routes'));
     });
   }
 
-}); */
+}); 
 
 app.use('/', require('./routes/ubicacionesGeograficas.routes'));
 app.use('/', require('./routes/adminuser.routes'));

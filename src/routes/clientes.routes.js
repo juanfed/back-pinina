@@ -298,8 +298,15 @@ router.post('/crearusuario/pinina', async (req, res) => {
         msg: `No ha ingresado el campo ${campoVacio.nombre}`,
       });
     }
-      
+
     const cliente = await respuestaT_clientes.searchT_clienteCorreo(correo);
+
+
+    
+
+
+
+
 
     if (!cliente) {
       const createT_clientes = await respuestaT_clientes.createT_usuario_registro(req);
