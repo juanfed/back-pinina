@@ -30,6 +30,8 @@ app.use('/', require('./routes/user.routes'));
 app.use('/', require('./routes/login.routes'));
 app.use('/', require('./routes/clientes.routes'));
 app.use("/", require('./routes/code.routes'));
+
+app.use('/', require('./routes/ubicacionesGeograficas.routes'));
  app.use(function(req, res, next) {
   const authHeader = req.headers.authorization;
 
@@ -53,7 +55,7 @@ app.use("/", require('./routes/code.routes'));
 
 }); 
 
-app.use('/', require('./routes/ubicacionesGeograficas.routes'));
+
 app.use('/', require('./routes/adminuser.routes'));
 app.use('/', require('./routes/clientes.routes'));
 app.use('/', require('./routes/mascotas.routes'));
