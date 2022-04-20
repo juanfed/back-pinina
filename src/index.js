@@ -15,7 +15,7 @@ app.use(cors());
 
 const publicPath = path.resolve(__dirname, './uploads/uploads2');
 app.use(express.static(publicPath));
-
+app.use(express.static('src/uploads'));
 //middleware para subir archivos
 app.use(fileUpload({
   useTempFiles : true,
@@ -84,7 +84,7 @@ app.use('/', require('./routes/publicaciones.routes'));
 
 app.use(require('./routes/routes'));
 /// imagenes de manera publica
-app.use(express.static('src/uploads'));
+
 // Port
 const port = process.env.PORT || 4001;
 
