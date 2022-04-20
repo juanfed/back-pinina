@@ -29,6 +29,7 @@ app.use(express.json());
 app.use('/', require('./routes/user.routes'));
 app.use('/', require('./routes/login.routes'));
 app.use('/', require('./routes/clientes.routes'));
+app.use("/", require('./routes/code.routes'));
  app.use(function(req, res, next) {
   const authHeader = req.headers.authorization;
 
@@ -60,7 +61,7 @@ app.use('/', require('./routes/citas.routes'));
 app.use('/', require('./routes/desparasitaciones.routes'));
 app.use('/', require('./routes/vacunas.routes'));
 app.use('/', require('./routes/hospitalizacion.routes'));
-app.use("/", require('./routes/code.routes'));
+
 app.use("/", require('./routes/inventarios.routes'));
 
 app.use('/', require('./routes/vacTVacuc.routes'));
