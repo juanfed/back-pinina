@@ -210,8 +210,8 @@ router.post("/verify-code-register", async (req, res) => {
       });
     }
     // la validacion es exitosa
-    res.status(200).json({
-      code: verifyRegister.rest,
+    return  res.status(200).json({
+     code: verifyRegister.rest,
       msg: verifyRegister.respuesta,
     });
   } catch (error) {

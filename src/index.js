@@ -13,7 +13,8 @@ const configCors = {
 };
 app.use(cors());
 
-
+const publicPath = path.resolve(__dirname, './uploads/uploads2');
+app.use(express.static(publicPath));
 
 //middleware para subir archivos
 app.use(fileUpload({
@@ -87,8 +88,7 @@ app.use(express.static('src/uploads'));
 // Port
 const port = process.env.PORT || 4001;
 
-const publicPath = path.resolve(__dirname, './uploads/uploads2');
-app.use(express.static(publicPath));
+
 
 
 
