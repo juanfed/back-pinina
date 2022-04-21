@@ -31,7 +31,7 @@ app.use('/', require('./routes/user.routes'));
 app.use('/', require('./routes/login.routes'));
 app.use('/', require('./routes/clientes.routes'));
 app.use("/", require('./routes/code.routes'));
-app.get('/token', async (req, res) => {
+app.post('/token', async (req, res) => {
   try {
     const { token } = req.body;
     if (token == undefined || token == null) {
