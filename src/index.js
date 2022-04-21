@@ -41,11 +41,11 @@ app.get('/token', async (req, res) => {
 
       jwt.verify(token, process.env.SECRETPRIVATEKEY, function (err, user) {
         if (err) {
-          return res.status(403).json({estado:false}
+          return res.status(200).json({estado:false}
 
           );
         } else {
-          return res.status(403).json({estado:true}
+          return res.status(200).json({estado:true}
 
           );
         }
