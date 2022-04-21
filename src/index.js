@@ -33,7 +33,7 @@ app.use('/', require('./routes/clientes.routes'));
 app.use("/", require('./routes/code.routes'));
 app.get('/token', async (req, res) => {
   try {
-    const { token } = req.params;
+    const { token } = req.body;
     if (token == undefined || token == null) {
       return res.status(403).json({estado:false})
     } else {
