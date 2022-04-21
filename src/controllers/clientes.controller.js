@@ -384,7 +384,7 @@ const getT_clientesporIdclienteYIdUsuario = async (id_clientes, id_usuario) => {
     return respuesta;
   } catch (err) {
     console.log(err);
-    throw new Error(`clientes.controller.js->deleteT_clientes()\n${err}`);
+    throw new Error(`clientes.controller.js->getT_clientesporIdclienteYIdUsuario()\n${err}`);
   }
 };
 

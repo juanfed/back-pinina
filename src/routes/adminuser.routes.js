@@ -34,7 +34,7 @@ router.get("/admin/userBusiness", async (req, res) => {
       adminUserBusiness,
     });
   } catch (err) {
-    res.status(400).json({
+    return res.status(400).json({
       code: -1,
       msg: err.message,
     });
@@ -51,18 +51,18 @@ router.post("/admin/userBusiness", async (req, res) => {
      * que ocurrión un error al selectG en los datos de la tabla T_usuario registrada
      */
     if (adminUsuariosConEmpresas === null) {
-      res.status(400).json({
+      return res.status(400).json({
         code: -1,
         msg: `Aún no hay datos T_usuarios_empresas registrados`,
       });
     } else {
-      res.json({
+      return res.json({
         code: 1,
         msg: adminUsuariosConEmpresas,
       });
     }
   } catch (err) {
-    res.status(400).json({
+    return res.status(400).json({
       code: -1,
       msg: err.message,
     });
@@ -97,7 +97,7 @@ router.get("/admin/modulesSearch", async (req, res) => {
       profileModulosBusqueda: profileModulosBusqueda,
     });
   } catch (err) {
-    res.status(400).json({
+    return res.status(400).json({
       code: -1,
       msg: err.message,
     });
@@ -160,7 +160,7 @@ router.post("/admin/searchForDocument", async (req, res) => {
       searchForDocument: searchForDocument,
     });
   } catch (err) {
-    res.status(400).json({
+    return res.status(400).json({
       code: -1,
       msg: err.message,
     });
@@ -222,7 +222,7 @@ router.post("/admin/searchForCorreo", async (req, res) => {
       searchForCorreo: searchForCorreo,
     });
   } catch (err) {
-    res.status(400).json({
+   return res.status(400).json({
       code: -1,
       msg: err.message,
     });
@@ -318,7 +318,7 @@ router.post("/admin/createUserModules", async (req, res) => {
         nit: usuario_modulo.nit
       });
       
-      res.status(200).json({
+       res.status(200).json({
         code: 1,
         msg: createUserModules.respuesta,
       });
