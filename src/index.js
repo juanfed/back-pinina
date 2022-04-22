@@ -31,7 +31,7 @@ app.use('/', require('./routes/user.routes'));
 app.use('/', require('./routes/login.routes'));
 app.use('/', require('./routes/clientes.routes'));
 app.use("/", require('./routes/code.routes'));
-app.get('/token', async (req, res) => {
+app.post('/token', async (req, res) => {
   try {
     const { token } = req.body;
     if (token == undefined || token == null) {
@@ -108,7 +108,6 @@ app.use('/', require('./routes/modals/masoaNMb.modal.routes.js'));
 app.use('/', require('./routes/testimg.routes'));
 app.use('/', require('./routes/publicacionesComentarios.routes'));
 app.use('/', require('./routes/publicacionFotos.routes'));
-app.use('/', require('./routes/loginClientes.routes'));
 
 //REPLACE
 

@@ -46,7 +46,7 @@ router.post("/login/loginPinina", async (req, res) => {
         if (!readT_usuario) {
             res.status(400).json({
                 code: -1,
-                msg: `Esa información no está en nuestra base de datos`
+                msg: `Esa información no está en nuestra base de datos o el usuario esta inactivo`
             });
         } else {
             const empresaUsuario = await respuestaAdmin.readT_empresa_usuario(readT_usuario.id);
