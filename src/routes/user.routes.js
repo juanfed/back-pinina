@@ -8,8 +8,71 @@ const sendEmail = require("../utils/email");
 
 //===========================================
 //Insertar los datos en t_usuario
-//===========================================
-router.post("/register/mail", async(req, res) => {
+//===========================================}
+
+
+
+router.put('/verificar-usuario', async (req, res) => {
+    try {
+
+        const { id_usuario, id_tipo_identificacion, identificacion, direccion, codigo_ubicacion_geografica_ciudad, telefono } = req.body;
+        const campos = [{
+            nombre: "id_usuario",
+            campo: id_usuario,
+        },
+        {
+            nombre: "id_tipo_identificacion",
+            campo: id_tipo_identificacion,
+        },
+        {
+            nombre: "identificacion",
+            campo: identificacion,
+        },
+        {
+            nombre: "direccion",
+            campo: direccion,
+        },
+        {
+            nombre: "codigo_ubicacion_geografica_ciudad",
+            campo: codigo_ubicacion_geografica_ciudad,
+        },
+        {
+            nombre: "telefono",
+            campo: telefono,
+        }];
+
+        const campoVacio = validarCampos(campos);
+
+        /**Si alguno de los campos NO fue enviado en la petición
+         * se le muestra al cliente el nombre del campo que falta
+         */
+        if (campoVacio)
+            return res.status(400).json({
+                code: -2,
+                msg: `No ha ingresado el campo ${campoVacio.nombre}`,
+            });
+
+
+    } catch (err) {
+        return res.status(500).json({
+            code: -1,
+            msg: err.message
+        })
+    }
+
+    const usuario = await respuestaCreateT_usuario.verificarUsuario(req);
+    if (usuario) {
+        return res.status(200).json({
+            message: "Usuario verificado", code: 1,
+            usuario
+        })
+    } else {
+        return res.status(400).json({ message: "No se pudo verificar usuario", code: -1 })
+    }
+
+
+})
+router.post("/register/mail", async (req, res) => {
     try {
         //Se toman solo los campos necesarios que vienen en el body de la petición
         let { segundo_nombre, segundo_apellido, origen_cuenta, codigo_ubicacion_geografica, telefono, firewall, token } = req.body;
@@ -31,12 +94,13 @@ router.post("/register/mail", async(req, res) => {
                 campo: token,
             }
         ];
+
         /**Se busca en el array si alguno de los campos no fue enviado,
          * en caso de que se encuentre algún campo vacio se guarda el
          * elemento encontrado dentro de la constante llamada "campoVacio"
          */
         const campoVacio = validarCampos(campos);
-    
+
         /**Si alguno de los campos NO fue enviado en la petición
          * se le muestra al cliente el nombre del campo que falta
          */
@@ -44,17 +108,17 @@ router.post("/register/mail", async(req, res) => {
             return res.status(400).json({
                 code: -2,
                 msg: `No ha ingresado el campo ${campoVacio.nombre}`,
-        });
+            });
 
         let dbUser = null;
-        
-        if(origen_cuenta === 2){
+
+        if (origen_cuenta === 2) {
             //
             const usuarioGoogleToken = await tokenController.decodificarToken(token); // retorna el payloy con todos los datos de google
             //
             dbUser = await respuestaCreateT_usuario.readT_usuarioCorreo(usuarioGoogleToken.email);
             //
-            if(dbUser !== null && dbUser.origen_cuenta !== 2){
+            if (dbUser !== null && dbUser.origen_cuenta !== 2) {
                 return res.status(400).json({
                     code: -1,
                     msg: `Usuario ya registrado, autenticar con Gmail`
@@ -95,7 +159,7 @@ router.post("/register/mail", async(req, res) => {
 
                     // Enviar el email al usuario con el codigo
                     await sendEmail(usuarioGoogleToken.email, optionsEmail);
-                    
+
                     res.status(200).json({
                         code: 1,
                         msg: createT_usuarioGoogle.respuesta.respuesta,

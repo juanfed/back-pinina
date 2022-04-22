@@ -1,6 +1,29 @@
 const pool = require('../../database/dbConection');
 const { encryptPassword } = require("../utils/encryptPassword");  
 
+
+
+const verificarUsuario = async(req)=>{
+    try{
+        const { id_usuario, id_tipo_identificacion, identificacion, direccion, codigo_ubicacion_geografica_ciudad, telefono } = req.body;
+
+        const usuario = await pool.query(`SELECT * FROM f_update_usuario_veri(${id_usuario},${id_tipo_identificacion},${identificacion},${direccion},${codigo_ubicacion_geografica_ciudad},${telefono})`);
+        if (JSON.stringify(usuario.rows) === '[]') {
+    
+            //Se le asigna null a la respuesta
+            return null;
+        }
+        /**En caso contrario quiere decir que si arrojó 1 registro
+         * por lo tanto se le asigna a la respuesta los valores de los atributos
+         * del registro encontrado que está en la primera posición del array */
+        else {
+            return respuesta.rows[0];
+        }
+    
+    }catch(err){
+        throw new Error("Error al actualizar los datos del usuario")
+    }
+}
 const createT_usuario_mail = async(data) => {
     try {
     
@@ -78,5 +101,6 @@ const readT_usuarioCorreo = async(correo) => {
 
 module.exports = {
     readT_usuarioCorreo,
-    createT_usuario_mail
+    createT_usuario_mail,
+    verificarUsuario
 }
