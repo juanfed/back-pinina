@@ -72,6 +72,54 @@ router.put('/verificar-usuario', async (req, res) => {
 
 
 })
+
+router.post('/usuario-verificado', async(req, res) => {
+
+    try {
+        
+        const { id_usuario } = req.body;
+
+        campos = [
+            {
+                nombre: "id_usuario",
+                campo: id_usuario
+            }
+        ]
+
+        const campoVacio = validarCampos(campos);
+
+        if (campoVacio){
+            return res.status(400).json({
+                code: -1,
+                msg: `No ha ingresado el campo ${campoVacio.nombre}`,
+            });
+        }
+
+        const usuarioVerificado = await respuestaCreateT_usuario.usuarioVerificado(id_usuario);
+
+        if (usuarioVerificado) {
+            return res.status(200).json({
+                code: 1,
+                msg: `El usuario esta verificado`,
+                usuarioVerificado
+            });
+        } else {
+            return res.status(400).json({
+                code: -1,
+                msg: `El usuario no se encuentra verificado`
+            });
+        }
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            code: -1,
+            error: `Error en usuario verificado ${error}`
+        });
+    }
+
+})
+
 router.post("/register/mail", async (req, res) => {
     try {
         //Se toman solo los campos necesarios que vienen en el body de la petición
@@ -170,7 +218,7 @@ router.post("/register/mail", async (req, res) => {
         }
     } catch (err) {
         console.log(err)
-        res.status(400).json({
+        return res.status(400).json({
             code: -1,
             msg: err.message
         });

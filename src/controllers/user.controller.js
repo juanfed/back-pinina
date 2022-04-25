@@ -1,8 +1,6 @@
 const pool = require('../../database/dbConection');
 const { encryptPassword } = require("../utils/encryptPassword");  
 
-
-
 const verificarUsuario = async(req)=>{
     try{
         const { id_usuario, id_tipo_identificacion, identificacion, direccion, codigo_ubicacion_geografica_ciudad, telefono } = req.body;
@@ -24,6 +22,7 @@ const verificarUsuario = async(req)=>{
         throw new Error("Error al actualizar los datos del usuario")
     }
 }
+
 const createT_usuario_mail = async(data) => {
     try {
     
@@ -99,8 +98,27 @@ const readT_usuarioCorreo = async(correo) => {
     }
 }
 
+const usuarioVerificado = async(id) => {
+
+    try {
+        
+        let respuesta = await pool.query(`SELECT * FROM f_usuario_verificado($1)`,[id]);
+
+        if (JSON.stringify(respuesta.rows) === '[]') {
+            return respuesta = null;
+        }else {
+            return respuesta = respuesta.rows[0];
+        }
+
+    } catch (error) {
+        console.log(error);
+        throw new Error(`Error usuario verificado ${error}`);
+    }
+}
+
 module.exports = {
     readT_usuarioCorreo,
     createT_usuario_mail,
-    verificarUsuario
+    verificarUsuario,
+    usuarioVerificado
 }
