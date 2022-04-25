@@ -1,6 +1,7 @@
 const router = require("express").Router();
 
 const respuestaCreateT_usuario = require('../controllers/user.controller');
+const respuestaClientes = require('../controllers/clientes.controller');
 const tokenController = require('../controllers/token.controller'); // controladores token
 const validarCampos = require("../utils/validateFields");
 const { registerMailMessage } = require("../utils/optionsEmail");
@@ -92,6 +93,15 @@ router.post('/usuario-verificado', async(req, res) => {
             return res.status(400).json({
                 code: -1,
                 msg: `No ha ingresado el campo ${campoVacio.nombre}`,
+            });
+        }
+
+        const usuarioExiste = await respuestaClientes.readT_clientes(req);
+
+        if (!usuarioExiste){
+            return res.status(400).json({
+                code: -1,
+                msg: `El usuario con id: ${id_usuario} no existe`,
             });
         }
 
